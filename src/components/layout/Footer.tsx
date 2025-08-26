@@ -194,7 +194,7 @@ export const Footer = () => {
   // Контент для вкладок (можно вынести в отдельные компоненты)
   const tabContent: Record<string, JSX.Element> = {
     privacy: (
-      <div className="p-8 text-lg max-w-[1400px] mx-auto w-full">
+      <div className="p-8 text-lg md:max-w-[1400px] mx-auto w-full">
         <p className="privacy-intro">НАСТОЯЩАЯ ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ ОПРЕДЕЛЯЕТ ПОРЯДОК ОБРАБОТКИ И ЗАЩИТЫ ПЕРСОНАЛЬНЫХ ДАННЫХ ФИЗИЧЕСКИХ ЛИЦ, ПОЛЬЗУЮЩИХСЯ СЕРВИСАМИ САЙТА SHELF (ДАЛЕЕ – КОМПАНИЯ).</p>
         <h3 className="text-accent mt-6 text-xl font-bold">1. Общие положения</h3>
         <p>1.1. Настоящая Политика является официальным документом Компании и определяет порядок обработки и защиты информации о физических лицах, пользующихся услугами сайта SHELF.</p>
@@ -222,7 +222,7 @@ export const Footer = () => {
       </div>
     ),
     terms: (
-      <div className="p-8 text-lg max-w-[1000px] max-w-[1400px] mx-auto w-full">
+      <div className="p-8 text-lg md:max-w-[1400px] mx-auto w-full">
         <h3 className="text-accent mt-6 text-xl font-bold">1. Общие положения</h3>
         <p>1.1. Настоящее Пользовательское соглашение (далее — Соглашение) регулирует отношения между владельцем сайта SHELF и пользователями данного сайта.</p>
         <p>1.2. Используя сайт, вы соглашаетесь с условиями данного Соглашения.</p>
@@ -671,10 +671,21 @@ export const Footer = () => {
           position: fixed;
           top: 50%;
           left: 50%;
+          width: 80%;
+          // height: 0%;
+          // padding: 40px 0;
+          max-width: 800px;
           transform: translate(-50%, -50%) scale(1);
           z-index: 50000; /* уровень 3: выше static-text */
           pointer-events: auto;
         }
+
+        @media (min-width: 768px) {
+          .thrown-container {
+            width: 60%;
+          }
+        }
+
 
         @keyframes slide-out-left-and-drop {
           0% {
@@ -768,7 +779,7 @@ export const Footer = () => {
         .static-text.terms,
         .thrown-text.terms,
         .policy-container.terms {
-          padding-top: 50px;
+          padding-top: 20px;
         }
         .static-text * {
           font-family: 'Slavic', sans-serif !important;
@@ -797,7 +808,7 @@ export const Footer = () => {
         .thrown-text *,
         .policy-container,
         .policy-container * {
-          font-weight: 700 !important;
+          font-weight: 500 !important;
         }
         .thrown-text::-webkit-scrollbar { display: none; }
         .thrown-text { -ms-overflow-style: none; scrollbar-width: none; }

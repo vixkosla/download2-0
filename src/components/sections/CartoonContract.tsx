@@ -189,7 +189,7 @@ export const CartoonContract: React.FC<CartoonContractProps> = ({
           ДОГОВОР
         </div>
         <div style={{
-          marginBottom: 70,
+          // marginBottom: 30,
           color: '#5f5e5f',
           maxWidth: 750,
           width: '100%',
@@ -197,7 +197,7 @@ export const CartoonContract: React.FC<CartoonContractProps> = ({
           overflowWrap: 'break-word',
           lineHeight: 1.2,
           textAlign: 'center',
-          margin: '0 auto 70px auto',
+          margin: '0 auto 30px auto',
           paddingLeft: 24,
           paddingRight: 24,
           fontWeight: 800,
@@ -224,7 +224,7 @@ export const CartoonContract: React.FC<CartoonContractProps> = ({
               position: 'absolute',
               left: 0,
               right: 0,
-              top: 280,
+              top: 200,
               display: 'flex',
               justifyContent: 'center',
               width: '90%',
