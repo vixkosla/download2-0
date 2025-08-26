@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  async rewrites() {
+    return [
+      // Safety rewrites for texture images where casing previously mismatched
+      { source: '/images/textures/IMG_6308.PNG', destination: '/images/textures/img_6308.png' },
+      { source: '/images/textures/IMG_6309.PNG', destination: '/images/textures/img_6309.png' },
+    ];
+  },
   images: {
     remotePatterns: [
       {

@@ -1,8 +1,12 @@
 export const animation5Frames: string[] = [
   "/animation5/IMG_6883.PNG",
   "/animation5/IMG_6884.PNG",
+  "/animation5/IMG_6885.PNG",
   "/animation5/IMG_6886.PNG",
+  "/animation5/IMG_6887.PNG",
   "/animation5/IMG_6888.PNG",
+  "/animation5/IMG_6889.PNG",
+  "/animation5/IMG_6890.PNG",
   "/animation5/IMG_6891.PNG",
   "/animation5/IMG_6892.PNG",
   "/animation5/IMG_6893.PNG",

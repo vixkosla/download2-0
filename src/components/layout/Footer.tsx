@@ -30,12 +30,12 @@ const TABS = [
   {
     key: 'terms',
     label: 'Пользовательское соглашение',
-    image: '/images/textures/IMG_6309.PNG', // visual icon for the terms of service tab
+    image: '/images/textures/img_6309.png', // visual icon for the terms of service tab
   },
   {
     key: 'privacy',
     label: 'Политика конфиденциальности',
-    image: '/images/textures/IMG_6308.PNG', // visual icon for the privacy policy tab
+    image: '/images/textures/img_6308.png', // visual icon for the privacy policy tab
   },
 ];
 

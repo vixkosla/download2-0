@@ -4,6 +4,7 @@ import * as React from "react"
 import { useState, useEffect, useRef, useMemo } from "react"
 import { Phone, Mail, Instagram, Send, MessageCircle } from 'lucide-react'
 import { useInView } from 'react-intersection-observer';
+import { motion } from 'framer-motion';
 
 interface CosmicNebulaMastercardProps {
   cardholderName?: string
@@ -54,6 +55,9 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
   const rotationRef = useRef({ x: 15, y: 20, z: 5 })
   const rotationSpeedRef = useRef({ x: 0.2, y: 0.3, z: 0.05 })
   const [flipped, setFlipped] = useState(false)
+  const [activeBounceBullet, setActiveBounceBullet] = useState(0)
+  const isHoveredRef = useRef(false)
+  const flippedRef = useRef(false)
   // Для подсветки текста
   const [hoveredText, setHoveredText] = useState<string | null>(null)
   // Для плавного поворота
@@ -91,16 +95,28 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
 
   useEffect(() => {
     if (inView && !flipped) {
-      flipTimeoutRef.current = setTimeout(() => setFlipped(true), 3000);
+      flipTimeoutRef.current = setTimeout(() => setFlipped(true), 1000);
     }
     return () => {
       if (flipTimeoutRef.current) clearTimeout(flipTimeoutRef.current);
     };
   }, [inView, flipped]);
 
+  // Sync refs to avoid stale values inside rAF loops
+  useEffect(() => { isHoveredRef.current = isHovered }, [isHovered])
+  useEffect(() => { flippedRef.current = flipped }, [flipped])
+
+  // Cycle active icon for bounce animation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveBounceBullet(prev => (prev + 1) % 5);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Animation loop for continuous rotation when not hovered
   const animate = () => {
-    if (!cardRef.current || isHovered) return
+    if (!cardRef.current || isHoveredRef.current) return
 
     rotationRef.current.x += rotationSpeedRef.current.x
     rotationRef.current.y += rotationSpeedRef.current.y
@@ -111,9 +127,10 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
     if (Math.abs(rotationRef.current.y) > 15) rotationSpeedRef.current.y *= -1
     if (Math.abs(rotationRef.current.z) > 5) rotationSpeedRef.current.z *= -1
 
+    const extraFlip = flippedRef.current ? 180 : 0
     cardRef.current.style.transform = `
       rotateX(${rotationRef.current.x}deg) 
-      rotateY(${rotationRef.current.y}deg) 
+      rotateY(${rotationRef.current.y + extraFlip}deg) 
       rotateZ(${rotationRef.current.z}deg)
     `
 
@@ -335,7 +352,13 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
-                  <Phone className="text-accent w-6 h-6" />
+                  <motion.span
+                    animate={activeBounceBullet === 0 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                    className="flex items-center"
+                  >
+                    <Phone className={`text-accent w-6 h-6${activeBounceBullet === 0 ? ' bounce-check' : ''}`} />
+                  </motion.span>
                   +7 (812) 317-22-00
                 </a>
                 {/* WhatsApp */}
@@ -346,7 +369,13 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
-                  <MessageCircle className="w-6 h-6" style={{ color: '#25D366' }} />
+                  <motion.span
+                    animate={activeBounceBullet === 1 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                    className="flex items-center"
+                  >
+                    <MessageCircle className={`w-6 h-6${activeBounceBullet === 1 ? ' bounce-check' : ''}`} style={{ color: '#25D366' }} />
+                  </motion.span>
                   +7 (921) 999-22-00
                 </a>
                 {/* Email */}
@@ -355,7 +384,13 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
-                  <Mail className="w-6 h-6" style={{ color: '#888' }} />
+                  <motion.span
+                    animate={activeBounceBullet === 2 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                    className="flex items-center"
+                  >
+                    <Mail className={`w-6 h-6${activeBounceBullet === 2 ? ' bounce-check' : ''}`} style={{ color: '#888' }} />
+                  </motion.span>
                   SHELF.SBORKA.SPB@GMAIL.COM
                 </a>
                 {/* Instagram */}
@@ -366,7 +401,13 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
-                  <Instagram className="w-6 h-6" style={{ color: '#E1306C' }} />
+                  <motion.span
+                    animate={activeBounceBullet === 3 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                    className="flex items-center"
+                  >
+                    <Instagram className={`w-6 h-6${activeBounceBullet === 3 ? ' bounce-check' : ''}`} style={{ color: '#E1306C' }} />
+                  </motion.span>
                   SHELF_SBORKA_SPB
                 </a>
                 {/* Telegram */}
@@ -377,7 +418,13 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
-                  <Send className="w-6 h-6" style={{ color: '#229ED9' }} />
+                  <motion.span
+                    animate={activeBounceBullet === 4 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                    className="flex items-center"
+                  >
+                    <Send className={`w-6 h-6${activeBounceBullet === 4 ? ' bounce-check' : ''}`} style={{ color: '#229ED9' }} />
+                  </motion.span>
                   @SHELF_SBORKA_SPB
                 </a>
               </div>

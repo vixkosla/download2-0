@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, Instagram } from 'lucide-react'; // Added Phone
@@ -25,28 +26,19 @@ export const ContactCard: React.FC = () => {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    const observer = new window.IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          timer = setTimeout(() => setFlipped(true), 1000);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
+    // Keep observer placeholder, but do NOT auto-flip so the front (icons) stays visible
+    const observer = new window.IntersectionObserver(() => {}, { threshold: 0.3 });
     if (cardRef.current) {
       observer.observe(cardRef.current);
     }
     return () => {
-      if (timer) clearTimeout(timer);
       observer.disconnect();
     };
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveBounceBullet(prev => (prev + 1) % 4);
+      setActiveBounceBullet(prev => (prev + 1) % 5);
     }, 2000);
     return () => clearInterval(interval);
   }, []);
@@ -110,27 +102,55 @@ export const ContactCard: React.FC = () => {
               {/* Правая колонка: контакты */}
               <div className="flex flex-col justify-center items-start flex-1 gap-2.5 md:gap-4 text-white text-base sm:text-lg md:text-xl font-furore">
                 <a href="tel:+78123172200" className="flex items-center gap-3 hover:text-accent transition-colors">
-                  <Phone className={`h-5 w-5 sm:h-6 sm:w-6 text-accent${activeBounceBullet === 0 ? ' bounce-check' : ''}`} />
+                  <motion.span
+  animate={activeBounceBullet === 0 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+  transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+  className="flex items-center"
+>
+  <Phone className={`h-5 w-5 sm:h-6 sm:w-6 text-accent${activeBounceBullet === 0 ? ' bounce-check' : ''}`} />
+</motion.span>
                   +7 (812) 317-22-00
                 </a>
                 <a href="tel:+79219992200" className="flex items-center gap-3 hover:text-accent transition-colors">
-                  <span className={`${activeBounceBullet === 1 ? 'bounce-check' : ''}`} style={{ color: '#25D366', fontSize: 24, display: 'flex', alignItems: 'center' }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </span>
+                  <motion.span
+  animate={activeBounceBullet === 1 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+  transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+  className="flex items-center"
+  style={{ color: '#25D366', fontSize: 24, display: 'flex', alignItems: 'center' }}
+>
+  <svg className={`${activeBounceBullet === 1 ? 'bounce-check' : ''}`} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="#25D366" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+</motion.span>
                   +7 (921) 999-22-00
                 </a>
                 <a href="mailto:shelf.sborka.spb@gmail.com" className="flex items-center gap-3 hover:text-accent transition-colors">
-                  <Mail className={`h-5 w-5 sm:h-6 sm:w-6${activeBounceBullet === 2 ? ' bounce-check' : ''}`} style={{ color: '#888888' }} />
+                  <motion.span
+  animate={activeBounceBullet === 2 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+  transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+  className="flex items-center"
+>
+  <Mail className={`h-5 w-5 sm:h-6 sm:w-6${activeBounceBullet === 2 ? ' bounce-check' : ''}`} style={{ color: '#888888' }} />
+</motion.span>
                   shelf.sborka.spb@gmail.com
                 </a>
                 <a href="https://instagram.com/shelf_sborka_spb" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-accent transition-colors">
-                  <Instagram className={`h-5 w-5 sm:h-6 sm:w-6 text-[#E1306C]${activeBounceBullet === 3 ? ' bounce-check' : ''}`} />
+                  <motion.span
+  animate={activeBounceBullet === 3 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+  transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+  className="flex items-center"
+>
+  <Instagram className={`h-5 w-5 sm:h-6 sm:w-6 text-[#E1306C]${activeBounceBullet === 3 ? ' bounce-check' : ''}`} />
+</motion.span>
                   SHELF_SBORKA_SPB
                 </a>
                 <a href="https://t.me/shelf_sborka_spb" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-accent transition-colors">
-                  <span className={`${activeBounceBullet === 0 ? 'bounce-check' : ''}`} style={{ color: '#229ED9', fontSize: 24, display: 'flex', alignItems: 'center' }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13" stroke="#229ED9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 2L15 22l-4-9-9-4 20-6z" stroke="#229ED9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </span>
+                  <motion.span
+  animate={activeBounceBullet === 4 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+  transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+  className="flex items-center"
+  style={{ color: '#229ED9', fontSize: 24, display: 'flex', alignItems: 'center' }}
+>
+  <svg className={`${activeBounceBullet === 4 ? 'bounce-check' : ''}`} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13" stroke="#229ED9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 2L15 22l-4-9-9-4 20-6z" stroke="#229ED9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+</motion.span>
                   @SHELF_SBORKA_SPB
                 </a>
               </div>

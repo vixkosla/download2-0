@@ -83,7 +83,7 @@ export const AboutSection = () => {
           }
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
     observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -107,7 +107,7 @@ export const AboutSection = () => {
             inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
-          {inView && (
+          {true && (
             <SpritePlayer
               metaUrl="/animation6/meta.json"
               width={500}

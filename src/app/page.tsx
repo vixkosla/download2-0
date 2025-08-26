@@ -286,9 +286,11 @@ export default function Home() {
 
         {/* Партнёрский блок: оборачиваем заголовок и карусель в контейнер с ID "partners" */}
         <div id="partners" ref={partnersRef}>
-          <div className="section-title-wrapper py-12">
+          <div className="section-title-wrapper py-12 blur md:blur-sm lg:blur-none ">
             <motion.h2
-              className="section-title text-[10rem] md:text-[12rem] leading-none mb-12 flex items-center justify-center gap-8"
+              className="section-title text-[10rem] md:text-[12rem] 
+              
+              leading-none mb-12 flex items-center justify-center gap-8"
               style={{ color: '#ffc700' }}
               initial="hidden"
               animate={hasShownPartnersTitle ? "visible" : "hidden"}
