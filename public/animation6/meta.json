@@ -1,0 +1,11 @@
+{
+  "frames": 142,
+  "width": 400,
+  "height": 400,
+  "fps": 24,
+  "image": "sprite.webp",
+  "layout": "grid",
+  "frames_per_row": 10,
+  "rows": 15,
+  "delay_frames": 24
+}
