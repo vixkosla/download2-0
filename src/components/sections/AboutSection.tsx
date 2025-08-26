@@ -120,7 +120,7 @@ export const AboutSection = () => {
         </div>
         <motion.h2
           className="about-title font-bold text-accent font-furore uppercase leading-tight text-center
-          translate-y-[40px]
+          whitespace-nowrap 
           "
           initial={{ opacity: 0, x: '-120%', y: '20%', scale: 0.9, rotate: -45 }}
           animate={
@@ -128,7 +128,7 @@ export const AboutSection = () => {
               ? {
                   opacity: [0, 1, 1],
                   x: ['-120%', '12%', '0%'],
-                  y: ['20%', '0%', '100%'],
+                  y: ['20%', '0%', '130%'],
                   scale: [0.9, 1.06, 1.0],
                   rotate: [-45, 10, -5],
                 }

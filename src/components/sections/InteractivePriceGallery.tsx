@@ -32,7 +32,7 @@ export const InteractivePriceGallery: React.FC<InteractivePriceGalleryProps> = (
           initial={{ clipPath: 'inset(-50% 100% 0 0)' }}
           whileInView={{ clipPath: 'inset(-50% 0% 0 0)' }}
           transition={{ duration: 0.75, ease: 'easeOut' }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.13 }}
         />
         {/* Контент (заголовок, иконки) */}
         <div
@@ -84,7 +84,7 @@ export const InteractivePriceGallery: React.FC<InteractivePriceGalleryProps> = (
           initial={{ clipPath: 'inset(-50% 100% 0 0)' }}
           whileInView={{ clipPath: 'inset(-50% 0% 0 0)' }}
           transition={{ duration: 0.8, ease: 'easeInOut' }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.15 }}
         >
           <AllIconsGallery />
         </motion.div>
@@ -288,7 +288,7 @@ const GalleryIcon: React.FC<{
           justifyContent: 'center',
           marginTop: offsetY || 0,
         }}
-        className="transition-transform duration-200 md:scale-90 sm:scale-75"
+        className="transition-transform duration-200 md:scale-90"
       >
         {open ? (
           <img
@@ -361,7 +361,7 @@ const AllIconsGallery: React.FC = () => {
   };
 
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-[20px] gap-x-[10px] py-1 px-0 place-items-center" style={{ transform: 'translateY(-300px)' }}>
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-[80px] md:gap-y-[50px] gap-x-[10px] py-1 px-0 place-items-center" style={{ transform: 'translateY(-300px)' }}>
       {/* Первая строка: Спальня, Детская */}
       <div className="flex flex-col items-center">
         <h3 className="text-3xl font-furore text-yellow-400 mb-8 text-center w-full tracking-wider z-20 relative min-h-[60px] flex items-center justify-center transition-all duration-200">

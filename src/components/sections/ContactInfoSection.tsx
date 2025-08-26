@@ -92,7 +92,7 @@ export const ContactInfoSection: React.FC<{ sectionId?: string }> = ({ sectionId
         </motion.span>
 
         {/* underline sweep – пробежала и исчезла, без точки */}
-        <motion.i
+        {/* <motion.i
           aria-hidden="true"
           initial={{ scaleX: 0, opacity: 0 }}
           animate={
@@ -111,7 +111,7 @@ export const ContactInfoSection: React.FC<{ sectionId?: string }> = ({ sectionId
             transformOrigin: 'left center',
             borderRadius: 9999,
           }}
-        />
+        /> */}
       </span>
       {/* Контейнер изображения с материализацией из точек */}
       <span ref={imageRef as any} className="relative inline-block">
@@ -127,14 +127,14 @@ export const ContactInfoSection: React.FC<{ sectionId?: string }> = ({ sectionId
         />
 
         {/* Материализация из точек, волной слева направо, синхронно с линией */}
-        <motion.div
+        {/* <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
           initial={{ opacity: 0 }}
           animate={imageInView ? { opacity: [0, 1, 0] } : undefined}
           transition={{ duration: 1.6, times: [0, 0.45, 1], delay: 0.18 }}
-        >
-          {Array.from({ length: 14 * 10 }).map((_, idx) => {
+        > */}
+          {/* {Array.from({ length: 14 * 10 }).map((_, idx) => {
             const cols = 14;
             const rows = 10;
             const col = idx % cols;
@@ -164,8 +164,8 @@ export const ContactInfoSection: React.FC<{ sectionId?: string }> = ({ sectionId
                 }}
               />
             );
-          })}
-        </motion.div>
+          })} */}
+        {/* </motion.div> */}
       </span>
     </h2>
     <p className="text-center text-[#888888] text-xl md:text-3xl mb-6">работаем с 10 до 22</p>

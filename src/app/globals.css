@@ -588,6 +588,17 @@ html {
         pointer-events: none;
     }
 
+    /* Bounce animation for icons */
+    @keyframes bounceCheck {
+        0% { transform: translateY(0); }
+        20% { transform: translateY(-10px); }
+        40% { transform: translateY(0); }
+    }
+    .bounce-check {
+        animation: bounceCheck 1.2s;
+        display: inline-block;
+    }
+
     /* SVG border animation: линия "ползёт" из центра снизу в обе стороны */
     .svg-border {
         --svg-perimeter: 304;
@@ -1407,10 +1418,10 @@ html {
     .ipad-video {
         position: absolute;
         left: 0;
-        scale: 1.0;
-        top: 80px;
+        /* scale: 1.0; */
+        top: 5%;
         width: 100%;
-        height: calc(100% - 100px);
+        height: calc(93%);
         object-fit: cover;
         border-radius: 32px;
         z-index: 1;
@@ -2071,9 +2082,10 @@ body {
 }
 
 .about-title {
-  font-size: 3rem; /* text-5xl */
+  font-size: 5rem; /* text-5xl */
   text-align: center;
   margin-left: 0;
+  /* transform: translateY(100px); */
 }
 
 @media (min-width: 768px) {
