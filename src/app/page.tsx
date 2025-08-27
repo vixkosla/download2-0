@@ -286,7 +286,7 @@ export default function Home() {
 
       {/* Партнёрский блок: оборачиваем заголовок и карусель в контейнер с ID "partners" */}
       <div id="partners" ref={partnersRef}>
-        <div className="section-title-wrapper py-12 blur md:blur-sm lg:blur-none ">
+        <div className="section-title-wrapper py-12 blur md:blur-sm lg:blur-none scale-[0.7] md:scale-90 lg:scale-100">
           <motion.h2
             className="section-title text-[10rem] md:text-[12rem] 
               
