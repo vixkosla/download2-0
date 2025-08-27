@@ -2085,7 +2085,7 @@ body {
   font-size: 5rem; /* text-5xl */
   text-align: center;
   margin-left: 0;
-  /* transform: translateY(100px); */
+  transform: translateX(100px);
 }
 
 @media (min-width: 768px) {

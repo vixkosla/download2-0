@@ -421,7 +421,7 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
     <section
       id={sectionId}
       ref={sectionRef}
-            className="contact flex flex-col items-center justify-start relative overflow-visible min-h-screen w-[80%] mx-auto px-2"
+            className="contact flex flex-col items-center justify-start relative overflow-visible min-h-screen w-[100%] mx-auto px-2"
       // mousemove handled globally
       // onMouseLeave={resetSectionMotion} // Убираем, чтобы избежать конфликтов анимации
     >
@@ -520,12 +520,12 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
 
           {/* Список преимуществ */}
           <motion.ul
-            className="text-left mb-8 space-y-8"
+            className="text-left mb-8 space-y-8 text-xl md:text-2xl"
             variants={bulletContainerVariants}
             style={{ pointerEvents: 'none', transformStyle: 'preserve-3d' }}
           >
             <motion.li
-              className="flex items-center gap-6 w-full w-[130%] text-white font-furore text-2xl md:text-3xl"
+              className="flex items-center gap-6 w-full w-[130%] text-white font-furore "
               variants={bulletItemVariants}
               style={{ x: itemTransforms[0].x, y: itemTransforms[0].y, rotateX: itemTransforms[0].rotateX, rotateY: itemTransforms[0].rotateY, transformStyle: 'preserve-3d' }}
             >
@@ -541,7 +541,7 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
               </motion.span>
             </motion.li>
             <motion.li
-              className="flex items-center gap-6 w-full w-[130%] text-white font-furore text-2xl md:text-3xl"
+              className="flex items-center gap-6 w-full w-[130%] text-white font-furore "
               variants={bulletItemVariants}
               style={{ x: itemTransforms[1].x, y: itemTransforms[1].y, rotateX: itemTransforms[1].rotateX, rotateY: itemTransforms[1].rotateY, transformStyle: 'preserve-3d' }}
             >
@@ -557,7 +557,7 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
               </motion.span>
             </motion.li>
             <motion.li
-              className="flex items-center gap-6 w-full w-[130%] text-white font-furore text-2xl md:text-3xl"
+              className="flex items-center gap-6 w-full w-[130%] text-white font-furore "
               variants={bulletItemVariants}
               style={{ x: itemTransforms[2].x, y: itemTransforms[2].y, rotateX: itemTransforms[2].rotateX, rotateY: itemTransforms[2].rotateY, transformStyle: 'preserve-3d' }}
             >
@@ -573,7 +573,7 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
               </motion.span>
             </motion.li>
             <motion.li
-              className="flex items-center gap-6 w-full w-[130%] text-white font-furore text-2xl md:text-3xl"
+              className="flex items-center gap-6 w-full w-[130%] text-white font-furore"
               variants={bulletItemVariants}
               style={{ x: itemTransforms[3].x, y: itemTransforms[3].y, rotateX: itemTransforms[3].rotateX, rotateY: itemTransforms[3].rotateY, transformStyle: 'preserve-3d' }}
             >

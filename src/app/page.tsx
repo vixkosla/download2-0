@@ -35,7 +35,7 @@ import { AboutSection } from '@/components/sections/AboutSection';
 export default function Home() {
   const [showMiniSections, setShowMiniSections] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
-  const [buttonCenter, setButtonCenter] = useState<{x: number, y: number} | null>(null);
+  const [buttonCenter, setButtonCenter] = useState<{ x: number, y: number } | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const aboutSectionRef = useRef<HTMLDivElement>(null);
   // const [activeModalSectionId, setActiveModalSectionId] = useState<string | null>(null); // Managed by InteractivePriceGallery
@@ -52,64 +52,64 @@ export default function Home() {
 
   const furnitureCategories: FurnitureCategory[] = [
     {
-        id: "cat1",
-        name: "ШКАФ",
-        icon: <Wrench className="w-8 h-8" />,
+      id: "cat1",
+      name: "ШКАФ",
+      icon: <Wrench className="w-8 h-8" />,
     },
     {
-        id: "cat2",
-        name: "КОМОД",
-        icon: <Package className="w-8 h-8" />,
+      id: "cat2",
+      name: "КОМОД",
+      icon: <Package className="w-8 h-8" />,
     },
     {
-        id: "cat3",
-        name: "ТУМБА",
-        icon: <Hammer className="w-8 h-8" />,
+      id: "cat3",
+      name: "ТУМБА",
+      icon: <Hammer className="w-8 h-8" />,
     },
     {
-        id: "cat4",
-        name: "КУХНЯ",
-        icon: <Wrench className="w-8 h-8" />,
+      id: "cat4",
+      name: "КУХНЯ",
+      icon: <Wrench className="w-8 h-8" />,
     },
     {
-        id: "cat5",
-        name: "ГАРДЕРОБНАЯ",
-        icon: <Package className="w-8 h-8" />,
+      id: "cat5",
+      name: "ГАРДЕРОБНАЯ",
+      icon: <Package className="w-8 h-8" />,
     },
     {
-        id: "cat6",
-        name: "СТОЛ",
-        icon: <Hammer className="w-8 h-8" />,
+      id: "cat6",
+      name: "СТОЛ",
+      icon: <Hammer className="w-8 h-8" />,
     },
     {
-        id: "cat7",
-        name: "КРОВАТЬ",
-        icon: <Wrench className="w-8 h-8" />,
+      id: "cat7",
+      name: "КРОВАТЬ",
+      icon: <Wrench className="w-8 h-8" />,
     },
     {
-        id: "cat8",
-        name: "ДИВАН",
-        icon: <Package className="w-8 h-8" />,
-    },
-     {
-        id: "cat9",
-        name: "СТУЛ",
-        icon: <Hammer className="w-8 h-8" />,
+      id: "cat8",
+      name: "ДИВАН",
+      icon: <Package className="w-8 h-8" />,
     },
     {
-        id: "cat10",
-        name: "НАВЕСНАЯ ПОЛКА",
-        icon: <Wrench className="w-8 h-8" />,
+      id: "cat9",
+      name: "СТУЛ",
+      icon: <Hammer className="w-8 h-8" />,
     },
     {
-        id: "cat11",
-        name: "ПЕНАЛ",
-        icon: <Package className="w-8 h-8" />,
+      id: "cat10",
+      name: "НАВЕСНАЯ ПОЛКА",
+      icon: <Wrench className="w-8 h-8" />,
     },
     {
-        id: "cat12",
-        name: "КОМП. СТОЛ И СТУЛ",
-        icon: <Hammer className="w-8 h-8" />,
+      id: "cat11",
+      name: "ПЕНАЛ",
+      icon: <Package className="w-8 h-8" />,
+    },
+    {
+      id: "cat12",
+      name: "КОМП. СТОЛ И СТУЛ",
+      icon: <Hammer className="w-8 h-8" />,
     },
   ];
 
@@ -132,7 +132,7 @@ export default function Home() {
   ];
 
 
- const teamMembers: Testimonial[] = [
+  const teamMembers: Testimonial[] = [
     {
       quote:
         "Точность и аккуратность — мои главные принципы. Люблю, когда после моей работы мебель выглядит идеально, как с картинки.",
@@ -235,11 +235,11 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen relative scale-0.5">
-        <HydrationErrorBoundary>
-          <Hero />
-        </HydrationErrorBoundary>
-        <AboutSection />
-        {/* <div id="about" className="min-h-screen flex flex-col justify-center relative">
+      <HydrationErrorBoundary>
+        <Hero />
+      </HydrationErrorBoundary>
+      <AboutSection />
+      {/* <div id="about" className="min-h-screen flex flex-col justify-center relative">
           <div ref={aboutSectionRef} className="relative z-10">
                 <AboutUsSection
               onToggleDetailedInfo={() => {
@@ -271,139 +271,141 @@ export default function Home() {
           )}
         </div> */}
 
-        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-        {/* @ts-ignore - Gallery currently doesn't accept extra props, will refactor later */}
-        <InteractivePriceGallery
-          sectionId="pricing-gallery" // ID для навигации
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore - Gallery currently doesn't accept extra props, will refactor later */}
+      <InteractivePriceGallery
+        sectionId="pricing-gallery" // ID для навигации
+      />
+
+      {itemForDetailView && (
+        <ItemDetailView
+          item={itemForDetailView}
+          onClose={() => setItemForDetailView(null)}
         />
+      )}
 
-        {itemForDetailView && (
-          <ItemDetailView
-            item={itemForDetailView}
-            onClose={() => setItemForDetailView(null)}
-          />
-        )}
-
-        {/* Партнёрский блок: оборачиваем заголовок и карусель в контейнер с ID "partners" */}
-        <div id="partners" ref={partnersRef}>
-          <div className="section-title-wrapper py-12 blur md:blur-sm lg:blur-none ">
-            <motion.h2
-              className="section-title text-[10rem] md:text-[12rem] 
+      {/* Партнёрский блок: оборачиваем заголовок и карусель в контейнер с ID "partners" */}
+      <div id="partners" ref={partnersRef}>
+        <div className="section-title-wrapper py-12 blur md:blur-sm lg:blur-none ">
+          <motion.h2
+            className="section-title text-[10rem] md:text-[12rem] 
               
               leading-none mb-12 flex items-center justify-center gap-8"
-              style={{ color: '#ffc700' }}
+            style={{ color: '#ffc700' }}
+            initial="hidden"
+            animate={hasShownPartnersTitle ? "visible" : "hidden"}
+            variants={{
+              hidden: { opacity: 0, y: 120, scale: 0.7, rotate: -8, filter: 'blur(12px)' },
+              visible: {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                rotate: 0,
+                filter: 'blur(0px)',
+                transition: {
+                  type: 'spring',
+                  stiffness: 60,
+                  damping: 18,
+                  delay: 0.1,
+                },
+              },
+            }}
+          >
+            <motion.div
               initial="hidden"
               animate={hasShownPartnersTitle ? "visible" : "hidden"}
               variants={{
-                hidden: { opacity: 0, y: 120, scale: 0.7, rotate: -8, filter: 'blur(12px)' },
+                hidden: { opacity: 0, x: -120, scale: 0.6, rotate: -12, filter: 'blur(8px)' },
                 visible: {
                   opacity: 1,
-                  y: 0,
+                  x: 0,
                   scale: 1,
                   rotate: 0,
                   filter: 'blur(0px)',
                   transition: {
                     type: 'spring',
-                    stiffness: 60,
-                    damping: 18,
-                    delay: 0.1,
+                    stiffness: 80,
+                    damping: 16,
+                    delay: 0.25,
                   },
                 },
               }}
+              className="align-middle mr-6"
             >
-              <motion.div
-                initial="hidden"
-                animate={hasShownPartnersTitle ? "visible" : "hidden"}
-                variants={{
-                  hidden: { opacity: 0, x: -120, scale: 0.6, rotate: -12, filter: 'blur(8px)' },
-                  visible: {
-                    opacity: 1,
-                    x: 0,
-                    scale: 1,
-                    rotate: 0,
-                    filter: 'blur(0px)',
-                    transition: {
-                      type: 'spring',
-                      stiffness: 80,
-                      damping: 16,
-                      delay: 0.25,
-                    },
-                  },
-                }}
-                className="align-middle mr-6"
-              >
-                <SmoothFrameAnimation
-                  images={animation2Frames}
-                  baseFps={60}
-                  speedRanges={[{ startIndex: 7, endIndex: 76, multiplier: 2.8 }]}
-                  // Repeat frames IMG_6519..IMG_6523 (indices 84..88) three times total
-                  loopSegments={[{ startIndex: 84, endIndex: 88, times: 3 }]}
-                  width="400px"
-                  height="400px"
-                />
-              </motion.div>
-              <motion.span
-                className="text-center leading-none text-[#ffc700]"
-                initial="hidden"
-                animate={hasShownPartnersTitle ? "visible" : "hidden"}
-                variants={{
-                  hidden: {},
-                  visible: {
-                    transition: { staggerChildren: 0.08, delayChildren: 0.35 },
-                  },
-                }}
-              >
-                {['Н','а','ш','и'].map((l,i) => (
-                  <motion.span
-                    key={l+i}
-                    style={{ display: 'inline-block', color: '#ffc700' }}
-                    initial={{ opacity: 0, y: 60, scale: 0.7, rotate: -10 }}
-                    animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 90, damping: 14 }}
-                  >{l}</motion.span>
-                ))}
-                <br />
-                {['П','а','р','т','н','ё','р','ы'].map((l,i) => (
-                  <motion.span
-                    key={l+i+10}
-                    style={{ display: 'inline-block', color: '#ffc700' }}
-                    initial={{ opacity: 0, y: 80, scale: 0.7, rotate: 10 }}
-                    animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 90, damping: 14 }}
-                  >{l}</motion.span>
-                ))}
-              </motion.span>
-            </motion.h2>
-          </div>
-          {/* Передаём другой id, чтобы избежать дубликатов */}
+              <SmoothFrameAnimation
+                images={animation2Frames}
+                baseFps={60}
+                speedRanges={[{ startIndex: 7, endIndex: 76, multiplier: 2.8 }]}
+                // Repeat frames IMG_6519..IMG_6523 (indices 84..88) three times total
+                loopSegments={[{ startIndex: 84, endIndex: 88, times: 3 }]}
+                width="400px"
+                height="400px"
+              />
+            </motion.div>
+            <motion.span
+              className="text-center leading-none text-[#ffc700]"
+              initial="hidden"
+              animate={hasShownPartnersTitle ? "visible" : "hidden"}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.08, delayChildren: 0.35 },
+                },
+              }}
+            >
+              {['Н', 'а', 'ш', 'и'].map((l, i) => (
+                <motion.span
+                  key={l + i}
+                  style={{ display: 'inline-block', color: '#ffc700' }}
+                  initial={{ opacity: 0, y: 60, scale: 0.7, rotate: -10 }}
+                  animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+                  transition={{ type: 'spring', stiffness: 90, damping: 14 }}
+                >{l}</motion.span>
+              ))}
+              <br />
+              {['П', 'а', 'р', 'т', 'н', 'ё', 'р', 'ы'].map((l, i) => (
+                <motion.span
+                  key={l + i + 10}
+                  style={{ display: 'inline-block', color: '#ffc700' }}
+                  initial={{ opacity: 0, y: 80, scale: 0.7, rotate: 10 }}
+                  animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+                  transition={{ type: 'spring', stiffness: 90, damping: 14 }}
+                >{l}</motion.span>
+              ))}
+            </motion.span>
+          </motion.h2>
+        </div>
+        {/* Передаём другой id, чтобы избежать дубликатов */}
+        <div className='scale-80 md:scale-100'>
           <LogoCarousel sectionId="partners-carousel" active={hasShownPartners} />
+        </div>
 
-          {/* Supplier description below carousel */}
-          <motion.div
-            className="supplier-note text-center font-furore text-xl md:text-3xl px-4 mt-24 mx-auto"
-            style={{ maxWidth: 900, color: '#888888' }}
-            initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
-            animate={hasShownPartners ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 0, y: 60 }}
-            transition={{ type: 'spring', stiffness: 70, damping: 18, delay: 0.6 }}
-          >
-            Наши поставщики — люди, которые знают, как выглядит идеальная полка. И даже если вы не знаете, они всё равно привезут лучшее!
-          </motion.div>
+        {/* Supplier description below carousel */}
+        <motion.div
+          className="supplier-note text-center font-furore text-xl md:text-3xl px-4 mt-24 mx-auto"
+          style={{ maxWidth: 900, color: '#888888' }}
+          initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
+          animate={hasShownPartners ? { opacity: 1, y: 0, filter: 'blur(0px)' } : { opacity: 0, y: 60 }}
+          transition={{ type: 'spring', stiffness: 70, damping: 18, delay: 0.6 }}
+        >
+          Наши поставщики — люди, которые знают, как выглядит идеальная полка. И даже если вы не знаете, они всё равно привезут лучшее!
+        </motion.div>
+      </div>
+      <div className="contacts-form-columns container mx-auto grid grid-cols-1 md:grid-cols-1 gap-10 items-stretch">
+        <div className="flex justify-center items-center " style={{ marginBottom: '200px' }}>
+          <ContactInfoSection sectionId="contacts" />
         </div>
-        <div className="contacts-form-columns container mx-auto grid grid-cols-1 md:grid-cols-1 gap-10 items-stretch">
-          <div className="flex justify-center items-center " style={{ marginBottom: '200px' }}>
-            <ContactInfoSection sectionId="contacts" />
-          </div>
-          <div className="flex justify-center items-center " style={{ marginTop: '100px' }}>
-            <ContactFormSection sectionId="order-form" />
-          </div>
+        <div className="flex justify-center items-center " style={{ marginTop: '100px' }}>
+          <ContactFormSection sectionId="order-form" />
         </div>
+      </div>
     </div>
   );
 }
 
 function MiniSectionsFlyout({ startAnimation, buttonCenter, containerRef, teamMembers, onBack }: {
   startAnimation: boolean;
-  buttonCenter: {x: number, y: number} | null;
+  buttonCenter: { x: number, y: number } | null;
   containerRef: React.RefObject<HTMLDivElement>;
   teamMembers: Testimonial[];
   onBack: () => void;
@@ -413,7 +415,7 @@ function MiniSectionsFlyout({ startAnimation, buttonCenter, containerRef, teamMe
     { x: 0, y: 0, scale: 1.15, rotate: 8 },
     { x: 0, y: 0, scale: 0.95, rotate: 0 },
   ]);
-  const [containerRect, setContainerRect] = useState<{left: number, top: number, width: number, height: number} | null>(null);
+  const [containerRect, setContainerRect] = useState<{ left: number, top: number, width: number, height: number } | null>(null);
   const [openedMiniIndex, setOpenedMiniIndex] = useState<number | null>(null);
 
   useLayoutEffect(() => {
@@ -483,7 +485,7 @@ function MiniSectionsFlyout({ startAnimation, buttonCenter, containerRef, teamMe
           {openedMiniIndex === i ? section.full : section.mini}
         </motion.div>
       ))}
-      <div className="w-full flex justify-center mt-8 absolute left-0 right-0" style={{top: `calc(${finalPositions[0].y + 40}px)`}}>
+      <div className="w-full flex justify-center mt-8 absolute left-0 right-0" style={{ top: `calc(${finalPositions[0].y + 40}px)` }}>
         <Button
           onClick={() => {
             setOpenedMiniIndex(null);
@@ -499,4 +501,3 @@ function MiniSectionsFlyout({ startAnimation, buttonCenter, containerRef, teamMe
   );
 }
 
-    

@@ -273,12 +273,12 @@ export const Header: React.FC<HeaderProps> = ({ appReadyForAnimation = false, st
   return (
     <header ref={headerRef} className={cn('header', isScrolled && 'scrolled', hasAnimated && 'header--bounce')} style={{ minHeight: 140 }}>
       <div className="container header__content flex items-center justify-between gap-0 md:gap-4 lg:gap-8 pl-[0] lg:pl-[20px] ml-[0] 2xl:ml-[auto]">
-        <Link href="/" className="logo group flex flex-col items-center justify-center gap-1 relative min-h-[100px] scale-[0.65] md:scale-[0.8] lg:scale-[1]" aria-label="Перейти на главную страницу">
+        <Link href="/" className="logo group flex flex-col  items-center justify-center gap-1 relative min-h-[100px] scale-[0.55] md:scale-[0.8] lg:scale-[1]" aria-label="Перейти на главную страницу">
             <Image src="/images/logo.svg" alt="SHELF Сборка Мебели Logo" width={60} height={60} className="logo__image" data-ai-hint="logo company" />
             <p className="header__subtitle">Профессиональная</p>
             <p className="header__subtitle leading-none">Сборка мебели</p>
         </Link>
-        <div className="flex-1 flex items-center justify-between gap-8">
+        <div className="flex items-center justify-between gap-8">
           <nav className="nav hidden md:flex justify-center items-center ml-2">
              {renderNavLinks()}
           </nav>

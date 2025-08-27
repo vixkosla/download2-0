@@ -195,7 +195,7 @@ export const ContactInfoSection: React.FC<{ sectionId?: string }> = ({ sectionId
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="w-full max-w-[1000px] text-[#888888] font-furore text-2xl md:text-3xl leading-relaxed space-y-4"
+          className="w-full max-w-[1000px] text-[#888888] font-furore text-lg md:text-xl lg:text-2xl leading-relaxed space-y-4"
           style={{ perspective: '800px' }}
         >
         <motion.p

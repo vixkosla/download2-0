@@ -96,48 +96,51 @@ export const AboutSection = () => {
       className="relative flex flex-col items-center justify-center w-full py-16"
     >
       <div className="flex items-center justify-center gap-8 mb-12 transform 
-       translate-x-[-25px] translate-y-[350px]
-        md:translate-x-[0px] md:translate-y-[350px]
-        lg:translate-x-[-50px] lg:translate-y-[300px]
-        xl:translate-x-[-100px] xl:translate-y-[300px]
+       translate-x-[-25px] translate-y-[370px] 
+        md:translate-x-[0px] md:translate-y-[320px]
+        lg:translate-x-[-50px] lg:translate-y-[250px]
+        xl:translate-x-[-100px] xl:translate-y-[170px]
        ">
         {/* Вариант со спрайтом из public/animation6/sprite.webp + meta.json */}
         <div
-          className={`align-middle transform transition-all duration-700 ease-out ${
+          className={`scale-[0.8] align-middle transform transition-all duration-700 ease-out ${
             inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >
           {true && (
             <SpritePlayer
               metaUrl="/animation6/meta.json"
-              width={500}
-              height={400}
+              width={400}
+              height={320}
               holdFirstMs={0}
               holdLastMs={0}
               speedMultiplier={0.8}
             />
           )}
         </div>
-        <motion.h2
-          className="about-title font-bold text-accent font-furore uppercase leading-tight text-center
-          whitespace-nowrap 
-          "
-          initial={{ opacity: 0, x: '-120%', y: '20%', scale: 0.9, rotate: -45 }}
-          animate={
-            inView
-              ? {
-                  opacity: [0, 1, 1],
-                  x: ['-120%', '12%', '0%'],
-                  y: ['20%', '0%', '130%'],
-                  scale: [0.9, 1.06, 1.0],
-                  rotate: [-45, 10, -5],
-                }
-              : {}
-          }
-          transition={{ duration: 1.1, ease: 'easeOut', times: [0, 0.7, 1] }}
-        >
+
+          <motion.h2
+            className="about-title font-bold text-accent font-furore uppercase leading-tight text-center
+            whitespace-nowrap 
+            "
+            initial={{ opacity: 0, x: '-120%', y: '20%', scale: 0.9, rotate: -45 }}
+            animate={
+              inView
+                ? {
+                    opacity: [0, 1, 1],
+                    x: ['-120%', '12%', '-50%'],
+                    y: ['20%', '0%', '130%'],
+                    scale: [0.9, 1.06, 1.0],
+                    rotate: [-45, 10, -5],
+                  }
+                : {}
+            }
+            transition={{ duration: 1.1, ease: 'easeOut', times: [0, 0.7, 1] }}
+          >
           О нас
-        </motion.h2>
+          </motion.h2>
+
+
       </div>
       <div className="w-full flex justify-center mt-24">
         <FlipGallery />

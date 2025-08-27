@@ -49,7 +49,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
   const [isHovered, setIsHovered] = useState(false)
   const [time, setTime] = useState(0)
   const cardRef = useRef<HTMLDivElement>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const animationRef = useRef<number>(0)
   const timeAnimationRef = useRef<number>(0)
   const rotationRef = useRef({ x: 15, y: 20, z: 5 })
@@ -90,6 +90,11 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
     })
   }, [])
 
+  // Базовые размеры макета карточки (фиксируем внутренний лейаут)
+  const DESIGN_WIDTH = 900
+  const DESIGN_HEIGHT = 450
+  const [scaleFactor, setScaleFactor] = useState(1)
+
   const { ref: inViewRef, inView } = useInView({ threshold: 0.3 });
   const flipTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -101,6 +106,25 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
       if (flipTimeoutRef.current) clearTimeout(flipTimeoutRef.current);
     };
   }, [inView, flipped]);
+
+  // Комбинированный ref, чтобы и inView работал, и измерять контейнер
+  const setContainerRefs = (node: HTMLDivElement | null) => {
+    containerRef.current = node
+    inViewRef(node)
+  }
+
+  // Следим за шириной контейнера и масштабируем карту как единое целое
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const ro = new ResizeObserver((entries) => {
+      const cr = entries[0].contentRect
+      const s = cr.width / DESIGN_WIDTH
+      setScaleFactor(s > 0 ? s : 1)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   // Sync refs to avoid stale values inside rAF loops
   useEffect(() => { isHoveredRef.current = isHovered }, [isHovered])
@@ -245,28 +269,44 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
 
   return (
     <div
-      ref={inViewRef}
-      className={`perspective-3000 ${className}`}
-      style={{ perspective: "3000px", width: width ?? '100%', ...(height ? { height } : { aspectRatio: '2 / 1' }) }}
+      ref={setContainerRefs}
+      className={className}
+      style={{
+        perspective: "3000px",
+        width: width ?? '100%',
+        height: height ?? `${Math.round(DESIGN_HEIGHT * scaleFactor)}px`,
+        position: 'relative',
+        overflow: 'visible',
+      }}
       onClick={() => setFlipped(f => !f)}
       onMouseMove={handleParallax}
       onMouseLeave={resetParallax}
     >
+      {/* Scale wrapper: фиксированный макет, масштабируется целиком */}
       <div
-        ref={cardRef}
-        className="relative w-full h-full transition-shadow duration-300"
+        className="absolute left-1/2 top-1/2"
         style={{
-          border: isHovered ? '4px solid #ffc700' : '4px solid transparent',
-          borderRadius: 0,
-          transition: 'box-shadow 0.3s, border-color 0.3s, transform 0.3s cubic-bezier(.4,2,.6,1)',
-          transformStyle: 'preserve-3d',
-          // transform will be handled imperatively in applyParallaxTransform
-          width: '100%',
-          height: '100%',
+          width: `${DESIGN_WIDTH}px`,
+          height: `${DESIGN_HEIGHT}px`,
+          transform: `translate(-50%, -50%) scale(${scaleFactor})`,
+          transformOrigin: 'center center',
         }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
+        <div
+          ref={cardRef}
+          className="relative w-full h-full transition-shadow duration-300"
+          style={{
+            border: isHovered ? '4px solid #ffc700' : '4px solid transparent',
+            borderRadius: 0,
+            transition: 'box-shadow 0.3s, border-color 0.3s, transform 0.3s cubic-bezier(.4,2,.6,1)',
+            transformStyle: 'preserve-3d',
+            // transform will be handled imperatively in applyParallaxTransform
+            width: '100%',
+            height: '100%',
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
         {/* Back side (теперь первая, по умолчанию) */}
         <div
           className="absolute w-full h-full flex items-center justify-center rounded-none overflow-hidden bg-[#2D1B3B]"
@@ -309,8 +349,8 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
               position: 'absolute',
               top: `${icon.top}%`,
               left: `${icon.left}%`,
-              width: 'min(9vw, 48px)',
-              height: 'min(9vw, 48px)',
+              width: '48px',
+              height: '48px',
               transform: `translate(-50%, -50%) rotate(${icon.rotate}deg)`,
               pointerEvents: 'none',
               filter: 'grayscale(1) brightness(0.7)',
@@ -320,11 +360,11 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
             draggable={false}
           />
         ))}
-          <div className="absolute inset-0 flex flex-col justify-between p-6">
+          <div className="absolute inset-0 flex flex-col justify-between p-6 ">
             {/* Заголовок */}
             <div className="w-full text-center mb-4">
               <span
-                className={`text-accent font-furore text-3xl md:text-4xl font-bold uppercase tracking-wide transition-colors duration-200 ${hoveredText === 'ЗАГОЛОВОК' ? 'text-yellow-400' : ''}`}
+                className={`text-accent font-furore text-2xl font-bold uppercase tracking-wide transition-colors duration-200 ${hoveredText === 'ЗАГОЛОВОК' ? 'text-yellow-400' : ''}`}
                 onMouseEnter={() => setHoveredText('ЗАГОЛОВОК')}
                 onMouseLeave={() => setHoveredText(null)}
               >
@@ -332,12 +372,12 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
               </span>
             </div>
             {/* Контент: две колонки */}
-            <div className="flex flex-row w-full flex-1">
+            <div className="flex flex-row w-full flex-1 ">
               {/* Левая колонка */}
               <div className="flex flex-col justify-center items-start flex-1 pl-2">
-                <span className="text-white font-furore text-xl md:text-2xl tracking-wide uppercase transition-colors duration-200">СБОРКА</span>
-                <span className="text-white font-furore text-xl md:text-2xl tracking-wide uppercase transition-colors duration-200">РЕМОНТ</span>
-                <span className="text-white font-furore text-xl md:text-2xl tracking-wide uppercase transition-colors duration-200">МОДЕРНИЗАЦИЯ</span>
+                <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">СБОРКА</span>
+                <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">РЕМОНТ</span>
+                <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">МОДЕРНИЗАЦИЯ</span>
               </div>
               {/* Вертикальная линия */}
               <div 
@@ -349,7 +389,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                 {/* Телефон */}
                 <a
                   href="tel:+78123172200"
-                  className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
                   <motion.span
@@ -366,7 +406,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   href="https://wa.me/79219992200"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
                   <motion.span
@@ -381,7 +421,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                 {/* Email */}
                 <a
                   href="mailto:SHELF.SBORKA.SPB@GMAIL.COM"
-                  className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
                   <motion.span
@@ -398,7 +438,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   href="https://instagram.com/SHELF_SBORKA_SPB"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
                   <motion.span
@@ -415,7 +455,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
                   href="https://t.me/SHELF_SBORKA_SPB"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white font-furore text-lg md:text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
                   style={{ textDecoration: 'none' }}
                 >
                   <motion.span
@@ -432,168 +472,9 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
           </div>
         </div>
       </div>
-
-      <style>
-        {`
-        @keyframes holographicShift {
-          0% { background-position: 0% 0%; }
-          50% { background-position: 100% 100%; }
-          100% { background-position: 0% 0%; }
-        }
-        
-        @keyframes aurora {
-          0% { transform: translate(5%, 5%) scale(1.0); opacity: 0.7; }
-          50% { transform: translate(-5%, -5%) scale(1.2); opacity: 0.9; }
-          100% { transform: translate(5%, 5%) scale(1.0); opacity: 0.7; }
-        }
-        
-        @keyframes pulse-slow {
-          0% { opacity: 0.6; }
-          50% { opacity: 0.9; }
-          100% { opacity: 0.6; }
-        }
-
-        @keyframes pulse-glow {
-          0% { filter: blur(5px) brightness(1); }
-          50% { filter: blur(7px) brightness(1.3); }
-          100% { filter: blur(5px) brightness(1); }
-        }
-        
-        .stars-small, .stars-medium, .stars-large, .stars-twinkle {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
-        
-        .stars-small {
-          background-image: radial-gradient(1px 1px at 20px 30px, white, rgba(0,0,0,0)),
-                          radial-gradient(1px 1px at 40px 70px, white, rgba(0,0,0,0)),
-                          radial-gradient(1px 1px at 50px 160px, white, rgba(0,0,0,0)),
-                          radial-gradient(1px 1px at 90px 40px, white, rgba(0,0,0,0)),
-                          radial-gradient(1px 1px at 130px 80px, white, rgba(0,0,0,0)),
-                          radial-gradient(1px 1px at 160px 120px, white, rgba(0,0,0,0));
-          background-size: 200px 200px;
-          opacity: 0.4;
-        }
-        
-        .stars-medium {
-          background-image: radial-gradient(1.5px 1.5px at 150px 150px, white, rgba(0,0,0,0)),
-                          radial-gradient(1.5px 1.5px at 220px 220px, white, rgba(0,0,0,0)),
-                          radial-gradient(1.5px 1.5px at 80px 250px, white, rgba(0,0,0,0)),
-                          radial-gradient(1.5px 1.5px at 180px 80px, white, rgba(0,0,0,0));
-          background-size: 300px 300px;
-          opacity: 0.4;
-        }
-        
-        .stars-large {
-          background-image: radial-gradient(2px 2px at 100px 100px, white, rgba(0,0,0,0)),
-                          radial-gradient(2px 2px at 200px 200px, white, rgba(0,0,0,0)),
-                          radial-gradient(2px 2px at 300px 300px, white, rgba(0,0,0,0));
-          background-size: 400px 400px;
-          opacity: 0.5;
-          animation: stars-move 100s linear infinite;
-        }
-
-        .stars-twinkle {
-          background-image: radial-gradient(2px 2px at 50px 50px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                          radial-gradient(2px 2px at 150px 150px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-                          radial-gradient(2px 2px at 250px 250px, rgba(255,255,255,0.8), rgba(0,0,0,0));
-          background-size: 300px 300px;
-          opacity: 0;
-          animation: twinkle 4s ease-in-out infinite alternate;
-        }
-
-        .particles-container {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background-image: 
-            radial-gradient(1px 1px at 10% 10%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 15% 15%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 20% 20%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 25% 25%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 30% 30%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 35% 35%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 40% 40%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 45% 45%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 50% 50%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 55% 55%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 60% 60%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 65% 65%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 70% 70%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 75% 75%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 80% 80%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 85% 85%, rgba(255,255,255,0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 90% 90%, rgba(51, 195, 240, 0.8), rgba(0,0,0,0)),
-            radial-gradient(1px 1px at 95% 95%, rgba(255,255,255,0.8), rgba(0,0,0,0));
-          background-size: 150% 150%;
-          animation: particles-float 20s ease infinite;
-          opacity: 0.6;
-        }
-        
-        @keyframes stars-move {
-          0% { background-position: 0px 0px, 0px 0px, 0px 0px; }
-          100% { background-position: 400px 400px, 300px 300px, 200px 200px; }
-        }
-
-        @keyframes twinkle {
-          0% { opacity: 0.1; }
-          50% { opacity: 0.7; }
-          100% { opacity: 0.3; }
-        }
-
-        @keyframes particles-float {
-          0% { background-position: 0% 0%; }
-          50% { background-position: 75% 75%; }
-          100% { background-position: 0% 0%; }
-        }
-        
-        .animate-holographicShift {
-          animation: holographicShift 5s ease infinite;
-        }
-        
-        .animate-aurora {
-          animation: aurora 15s ease infinite;
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse-slow 8s ease-in-out infinite;
-        }
-
-        .animate-pulse-glow {
-          animation: pulse-glow 3s ease-in-out infinite;
-        }
-        
-        .perspective-3000 {
-          perspective: 3000px;
-        }
-
-        .chip-glow {
-          position: relative;
-        }
-
-        .chip-glow::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          border-radius: inherit;
-          background: linear-gradient(135deg, rgba(51, 195, 240, 0.2) 0%, rgba(51, 195, 240, 0) 100%);
-          opacity: 0;
-          animation: chip-pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes chip-pulse {
-          0% { opacity: 0; }
-          50% { opacity: 0.7; }
-          100% { opacity: 0; }
-        }
-      `}
-      </style>
     </div>
+  </div>
   )
 }
 
-export default CosmicNebulaMastercard 
+export default CosmicNebulaMastercard

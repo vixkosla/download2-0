@@ -190,8 +190,8 @@ interface LogoCarouselProps {
 
 export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
   const x = useMotionValue(0);
-  // Буфер по 100 px слева и справа
-  const SIDE_BUFFER = 500;
+  // Боковой буфер слева/справа (динамический: на мобилке меньше)
+  const [sideBuffer, setSideBuffer] = useState(500);
   const [isDragging, setIsDragging] = useState(false);
   // Убираем лишние дубликаты — оставляем только одну копию массива логотипов
   const duplicated = logos;
@@ -225,6 +225,7 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
   const scale = useMotionValue(1);
   const translateX = useMotionValue(0);
   const translateY = useMotionValue(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (!isHovered) {
@@ -272,8 +273,13 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         setContainerWidth(fullWidth / copiesCount);
         // ширина видимой области = ширина секции (родителя)
         const parentWidth = trackRef.current.parentElement?.clientWidth || 0;
+        // динамически считаем буфер в зависимости от ширины экрана
+        const isMobileNow = window.innerWidth <= 640;
+        const localBuffer = isMobileNow ? 16 : 500;
+        setIsMobile(isMobileNow);
+        setSideBuffer(localBuffer);
         // видимая часть меньше ширины секции на два буфера
-        setVisibleWidth(Math.max(parentWidth - SIDE_BUFFER * 2, 0));
+        setVisibleWidth(Math.max(parentWidth - localBuffer * 2, 0));
       }
     };
 
@@ -415,7 +421,7 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
       animate={active ? {
         // Сначала летим вверх с увеличенным масштабом, затем zoom-out до нормального
         y: [1000, 0],       // пролетаем путь ~1000px до финальной позиции
-        scale: [1.5, 1.5, 1],    // держим крупный размер и только в конце уменьшаем
+        scale: [1.5, 1.5, 1.0],    // держим крупный размер и только в конце уменьшаем
         opacity: [0, 0.9, 1],
       } : {
         y: 1000,
@@ -428,7 +434,7 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         scale:  { duration: 0.35, ease: [0.42, 0, 0.58, 1] },
         opacity:{ duration: 0.20, ease: 'linear' },
       }}
-      className="w-screen h-[200px] overflow-hidden relative partners-carousel z-[30000]"
+      className="w-screen h-[130px] sm:h-[200px] overflow-hidden relative partners-carousel z-[30000]"
       style={{
         backgroundImage: "url('/images/partners/IMG_6107.jpg')",
         backgroundRepeat: 'repeat-x',
@@ -436,8 +442,8 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         backgroundPositionY: 'bottom',
         backgroundColor: '#2D1B3B',
         backgroundPositionX,
-        paddingLeft: SIDE_BUFFER,
-        paddingRight: SIDE_BUFFER,
+        paddingLeft: sideBuffer,
+        paddingRight: sideBuffer,
         transform: 'none',
         scale,
         x: translateX,
@@ -472,7 +478,7 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
       />
       <motion.div
         ref={trackRef}
-        className="absolute bottom-0 flex gap-32 w-max z-20 cursor-grab active:cursor-grabbing"
+        className="absolute bottom-0 flex gap-16 sm:gap-32 w-max z-20 cursor-grab active:cursor-grabbing"
         style={{ x, touchAction: 'pan-y' }}
         drag="x"
         dragConstraints={{ left: -(Math.max(containerWidth - visibleWidth, 0) + OVERSHOOT), right: OVERSHOOT }}
@@ -518,13 +524,13 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         }}
       >
         {duplicated.map((logo, index) => {
-          const scaledWidth = logo.width ? Math.round(logo.width * 0.6) : undefined;
-          const scaledHeight = logo.height ? Math.round(logo.height * 0.6) : undefined;
+          const factor = isMobile ? 0.5 : 0.6;
+          const scaledWidth = logo.width ? Math.round(logo.width * factor) : undefined;
+          const scaledHeight = logo.height ? Math.round(logo.height * factor) : undefined;
           return (
             <div
               key={index}
-              className="flex-shrink-0 flex items-center justify-center h-[200px] cursor-pointer group relative"
-              style={{ minWidth: '240px' }}
+              className="flex-shrink-0 flex items-center justify-center h-[130px] sm:h-[200px] cursor-pointer group relative min-w-[160px] sm:min-w-[240px]"
             >
               {logo.websiteUrl ? (
                 <a 

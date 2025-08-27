@@ -163,7 +163,7 @@ export default function FlipGallery() {
         <div
           id="flip-gallery"
           ref={containerRef}
-          className="relative w-[800px] h-[425px] text-center scale-[0.70] md:scale-[1.0] xl:scale-[1.25]" 
+          className="relative w-[800px] h-[425px] text-center scale-[0.55] md:scale-[1.0] xl:scale-[1.25]" 
           style={{
             perspective: '800px',
             backgroundImage: `url(${BACKGROUND_IMG})`,

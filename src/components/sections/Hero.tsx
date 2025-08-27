@@ -908,10 +908,11 @@ export const Hero = ({ startHeroAnimations = false }: { startHeroAnimations?: bo
               initial="hidden"
               animate="show"
               exit="hidden"
-              className=" md:block absolute scale-[0.65] translate-x-[-85%] translate-y-[15%] 
-              md:translate-x-[-60%] md:translate-y-[-10%] md:scale-x-[0.55] 
+              className=" md:block absolute scale-[0.40] translate-x-[-90%] translate-y-[5%] 
+              md:translate-x-[-75%] md:translate-y-[-10%] md:scale-[0.55] md:translate-y-[20%]
               lg:translate-x-[-60%] lg:translate-y-[5%] lg:scale-[0.8] 
-              xl:translate-x-[-45%] xl:translate-y-[5%] xl:scale-[0.9]"
+              xl:translate-x-[-45%] xl:translate-y-[5%] xl:scale-[0.9]
+              2xl:translate-x-[-25%] 2xl:scale-[1]"
               style={{
                 left: 'calc(50% + 300px)',
                 top: '10%',
