@@ -28,11 +28,11 @@ export const InteractivePriceGallery: React.FC<InteractivePriceGalleryProps> = (
             backgroundPosition: 'calc(50% + 50px) calc(50% - 130px)',
             backgroundRepeat: 'no-repeat',
             zIndex: 0,
+            willChange: 'opacity, transform',
           }}
-          initial={{ clipPath: 'inset(-50% 100% 0 0)' }}
-          whileInView={{ clipPath: 'inset(-50% 0% 0 0)' }}
-          transition={{ duration: 0.75, ease: 'easeOut' }}
-          viewport={{ once: true, amount: 0.13 }}
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         />
         {/* Контент (заголовок, иконки) */}
         <div
@@ -81,10 +81,10 @@ export const InteractivePriceGallery: React.FC<InteractivePriceGalleryProps> = (
         </div>
         <motion.div
           className='w-[95vw] translate-x-[7vw]'
-          initial={{ clipPath: 'inset(-50% 100% 0 0)' }}
-          whileInView={{ clipPath: 'inset(-50% 0% 0 0)' }}
-          transition={{ duration: 0.8, ease: 'easeInOut' }}
-          viewport={{ once: true, amount: 0.15 }}
+          style={{ willChange: 'opacity, transform' }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <AllIconsGallery />
         </motion.div>
@@ -161,7 +161,7 @@ const PriceIconWithTooltip: React.FC = () => {
       <AnimatePresence initial={false}>
         <motion.img
           key={hovered ? 'open' : 'closed'}
-          src={hovered ? '/app/шкаф-открыт.png' : '/app/шкаф-закрыт.png'}
+          src={encodeURI(hovered ? '/app/шкаф-открыт.png' : '/app/шкаф-закрыт.png')}
           alt={hovered ? 'Шкаф открыт' : 'Шкаф закрыт'}
           width={220}
           height={300}
@@ -170,6 +170,11 @@ const PriceIconWithTooltip: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 0.2 }}
+          onError={(e) => {
+            const target = e.currentTarget as HTMLImageElement;
+            target.onerror = null;
+            target.src = '/images/logo.svg';
+          }}
         />
       </AnimatePresence>
       <AnimatePresence>
@@ -197,7 +202,7 @@ const ICON_GROUPS = [
   {
     room: 'СПАЛЬНЯ',
     icons: [
-      { name: 'Шкаф', closed: '/app/1 шкаф-закрыт-.png', open: '/app/1 шкаф-открыт-.png', price: 3500, small: false, large: false, offsetY: 0, width: 115, height: 145 },
+      { name: 'Шкаф', closed: '/app/1-шкаф-закрыт.png', open: '/app/1-шкаф-открыт.png', price: 3500, small: false, large: false, offsetY: 0, width: 115, height: 145 },
       { name: 'Тумбочка', closed: '/app/5-тумбочка-закрыта-с.png', open: '/app/5-тумбочка-открыта-с.png', price: 1200, small: false, large: false, offsetY: 0, width: 80, height: 100 },
       { name: 'Кровать', closed: '/app/6-кровать-с.png', open: '/app/6-кровать-с.png', price: 8000, small: false, large: false, offsetY: 0, width: 180, height: 160 },
     ],
@@ -205,16 +210,16 @@ const ICON_GROUPS = [
   {
     room: 'ДЕТСКАЯ',
     icons: [
-      { name: '2 тумбочка-закрыта-телевизор', closed: '/app/2 тумбочка-закрыта-телевизор.png', open: '/app/2 тумбочка-открыта-телевизор.png', price: 1500, small: false, large: false, offsetY: 0, width: 110, height: 140 },
-      { name: '3 компстол с', closed: '/app/3 компстол-закрыт-с.png', open: '/app/3 компстол-открыт-с.png', price: 2500, small: false, large: false, offsetY: 0, width: 190, height: 180 },
+      { name: '2 тумбочка-закрыта-телевизор', closed: '/app/2-тумбочка-закрыта-телевизор.png', open: '/app/2-тумбочка-открыта-телевизор.png', price: 1500, small: false, large: false, offsetY: 0, width: 110, height: 140 },
+      { name: '3 компстол с', closed: '/app/3-компстол-закрыт-с.png', open: '/app/3-компстол-открыт-с.png', price: 2500, small: false, large: false, offsetY: 0, width: 190, height: 180 },
       // { name: '12 полка', closed: '/app/12-полка.png', price: 1800, small: false, large: false, offsetY: 10, width: 100, height: 40 },
-      { name: '10-пенал-закрыт', closed: '/app/10-пенал-закрыт —.png', open: '/app/10-пенал-открыт —.png', price: 3000, small: false, large: false, offsetY: 0, width: 110, height: 140 },
+      { name: '10-пенал-закрыт', closed: '/app/10-пенал-закрыт.png', open: '/app/10-пенал-открыт.png', price: 3000, small: false, large: false, offsetY: 0, width: 110, height: 140 },
     ],
   },
   {
     room: 'ГОСТИНАЯ',
     icons: [
-      { name: '4 кресло', closed: '/app/4 кресло.png', price: 2500, small: false, large: false, offsetY: 0, width: 80, height: 160 },
+      { name: '4 кресло', closed: '/app/4-кресло.png', price: 2500, small: false, large: false, offsetY: 0, width: 80, height: 160 },
       { name: '7 трехстворчатый', closed: '/app/7-трехствр-закрытый.png', open: '/app/7-трехствр-открытый.png', price: 6000, small: false, large: false, offsetY: 0, width: 180, height: 160 },
     ],
   },
@@ -222,7 +227,7 @@ const ICON_GROUPS = [
     room: 'КУХНЯ',
     icons: [
       { name: '16 кухня без', closed: '/app/16-кухня-закрыта-без.png', open: '/app/16-кухня-открыта-без.png', price: 4000, small: false, large: false, offsetY: 0, width: 230, height: 180 },
-      { name: '11 стол и стулья', closed: '/app/11-стол и стулья.png', price: 3000, small: false, large: false, offsetY: 0, width: 230, height: 180 },
+      { name: '11 стол и стулья', closed: '/app/11-стол-и-стулья.png', price: 3000, small: false, large: false, offsetY: 0, width: 230, height: 180 },
     ],
   },
   {
@@ -269,7 +274,7 @@ const GalleryIcon: React.FC<{
     ICON_HEIGHT = 240;
   }
 
-  const src = open && hovered ? open : closed;
+  const src = encodeURI(open && hovered ? open : closed);
 
   return (
     <div
@@ -297,16 +302,26 @@ const GalleryIcon: React.FC<{
             width={ICON_WIDTH}
             height={ICON_HEIGHT}
             style={{ position: 'absolute', left: 0, top: 0, width: ICON_WIDTH, height: ICON_HEIGHT, objectFit: 'contain', pointerEvents: 'none', userSelect: 'none' }}
+            onError={(e) => {
+              const target = e.currentTarget as HTMLImageElement;
+              target.onerror = null;
+              target.src = '/images/logo.svg';
+            }}
           />
         ) : (
           <motion.img
-            src={closed}
+            src={encodeURI(closed)}
             alt={name}
             width={ICON_WIDTH}
             height={ICON_HEIGHT}
             style={{ position: 'absolute', left: 0, top: 0, width: ICON_WIDTH, height: ICON_HEIGHT, objectFit: 'contain', pointerEvents: 'none', userSelect: 'none' }}
             animate={hovered ? { x: [0, -8, 8, -8, 8, 0], rotate: [-7, 7, -7, 7, 0] } : { x: 0, rotate: 0 }}
             transition={hovered ? { duration: 0.5, times: [0, 0.2, 0.4, 0.6, 0.8, 1] } : { duration: 0 }}
+            onError={(e) => {
+              const target = e.currentTarget as HTMLImageElement;
+              target.onerror = null;
+              target.src = '/images/logo.svg';
+            }}
           />
         )}
       </div>

@@ -163,7 +163,7 @@ export default function FlipGallery() {
         <div
           id="flip-gallery"
           ref={containerRef}
-          className="relative w-[800px] h-[425px] text-center"
+          className="relative w-[800px] h-[425px] text-center scale-[0.70] md:scale-[1.0] xl:scale-[1.25]" 
           style={{
             perspective: '800px',
             backgroundImage: `url(${BACKGROUND_IMG})`,
@@ -172,7 +172,7 @@ export default function FlipGallery() {
             backgroundRepeat: 'no-repeat',
           }}
         >
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 ">
             <FlibBook
               width={DEFAULT_PAGE_WIDTH}
               height={DEFAULT_PAGE_HEIGHT * 2}

@@ -337,7 +337,7 @@ html {
 
     .nav__link,
     .nav__list a {
-        @apply md:text-[1.1rem] lg:text-[1.25rem] xl:text-[1.5rem];
+        @apply md:text-[1.1rem] lg:text-[1.25rem] xl:text-[1.5rem] 2xl:text-[1.65rem];
 
         cursor: pointer;
         /* font-size: 1.5rem; */
@@ -514,7 +514,7 @@ html {
     }
 
     .nav__list {
-        @apply flex list-none md:gap-[0px] lg:gap-[10px] xl:gap-[30px] justify-center items-center m-0 p-0;
+        @apply flex list-none md:gap-[0px] lg:gap-[10px] xl:gap-[30px] 2xl:gap-[40px] justify-center items-center m-0 p-0;
     }
 
     /* Navigation Link Styles */

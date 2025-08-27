@@ -272,23 +272,23 @@ export const Header: React.FC<HeaderProps> = ({ appReadyForAnimation = false, st
 
   return (
     <header ref={headerRef} className={cn('header', isScrolled && 'scrolled', hasAnimated && 'header--bounce')} style={{ minHeight: 140 }}>
-      <div className="container header__content flex items-center justify-between gap-8">
+      <div className="container header__content flex items-center justify-between gap-0 md:gap-4 lg:gap-8 ml-[0] 2xl:ml-[auto]">
         <Link href="/" className="logo group flex flex-col items-center justify-center gap-1 relative min-h-[100px]">
             <Image src="/images/logo.svg" alt="SHELF Сборка Мебели Logo" width={60} height={60} className="logo__image" data-ai-hint="logo company" />
             <p className="header__subtitle">Профессиональная</p>
             <p className="header__subtitle leading-none">Сборка мебели</p>
         </Link>
         <div className="flex-1 flex items-center justify-between gap-8">
-          <nav className="nav hidden md:flex justify-center items-center ml-2 text-xs">
+          <nav className="nav hidden md:flex justify-center items-center ml-2">
              {renderNavLinks()}
           </nav>
            <div
               className={cn(
-                "relative flex items-center min-w-[220px] gap-2 ml-auto",
+                "relative flex items-center min-w-[220px] gap-2 ml-auto align-bottom",
                 !showPhone && "pointer-events-none"
               )}
               style={{
-                transform: showPhone ? 'translateY(0)' : 'translateY(-120%)',
+                transform: showPhone ? 'translateY(-6px)' : 'translateY(-120%)',
                 opacity: showPhone ? 1 : 0,
                 transition: 'transform 0.3s cubic-bezier(.7,0,.3,1), opacity 0.3s cubic-bezier(.7,0,.3,1)'
               }}
@@ -298,12 +298,12 @@ export const Header: React.FC<HeaderProps> = ({ appReadyForAnimation = false, st
                 className="flex items-center gap-2 text-white hover:text-accent transition-colors"
                 aria-label="Позвонить"
               >
-                <span className="select-text whitespace-nowrap" style={{fontSize: '1.5rem', lineHeight: 1}}>
+                <span className="select-text whitespace-nowrap text-lg md:text-xl">
                   +7 (921) 999-22-00
                 </span>
                 <Image src="/images/icons/phone.svg" alt="Телефон" width={42} height={42} className="phone-shake whitespace-nowrap" />
               </a>
-              <span className="absolute left-0 top-full mt-1 font-bold select-text whitespace-nowrap w-full text-center" style={{fontSize: '1.24rem', color: '#b0b0b0', lineHeight: 1, marginLeft: '-7px', letterSpacing: '0.02em'}}>
+              <span className="absolute left-0 top-full mt-1.5 font-bold select-text whitespace-nowrap w-full text-center text-base md:text-lg" style={{ color: '#b0b0b0', lineHeight: 0.5, letterSpacing: '0.02em'}}>
                 без выходных 10-22
               </span>
             </div>
