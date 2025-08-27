@@ -432,7 +432,7 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.15 }}
-        className="contact__content flex flex-col md:flex-row justify-between items-start relative mx-auto gap-6 pt-12 w-full"
+        className="contact__content flex flex-col md:flex-row justify-between md:justify-start items-start relative mx-auto gap-6 md:gap-10 pt-12 w-full"
       >
         {/* Creative marketing copy – visible on medium screens and above */}
         <motion.div
@@ -476,7 +476,8 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
               >
                 СБОРКУ
               </div>
-            </motion.div>
+              </motion.div>
+        </div>
             {/* Нижнее слово */}
               <motion.div
                 animate={{ scale: [1, 1.04, 1] }}
@@ -494,7 +495,7 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
                   ЗАКАЗАТЬ
                 </div>
               </motion.div>
-          </div>
+          
 
           {/* Подзаголовок — независимый элемент */}
           <motion.div
@@ -593,14 +594,17 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
         </motion.div>
 
         {/* Shift down contract block by 400px */}
-        <motion.div
-          variants={blockVariants}
-          className="contract-hover transform transition-transform duration-500 ease-out self-center mx-auto md:self-start md:mx-0"
+        <div
+          className="w-full flex justify-center md:justify-start origin-top scale-[0.85] md:scale-100"
           style={{ marginTop: 40 }}
-          whileHover={isDesktop ? { x: -375, scale: 1.12 } : undefined}
-          onHoverStart={() => { if (isDesktop) handleContractMouseEnter(); }}
-          onHoverEnd={() => { if (isDesktop) handleContractMouseLeave(); }}
         >
+          <motion.div
+            variants={blockVariants}
+            className="contract-hover transform transition-transform duration-500 ease-out self-center md:self-start md:mx-0"
+            whileHover={isDesktop ? { x: -375, scale: 1.12 } : undefined}
+            onHoverStart={() => { if (isDesktop) handleContractMouseEnter(); }}
+            onHoverEnd={() => { if (isDesktop) handleContractMouseLeave(); }}
+          >
           <CartoonContract
               lastName={showStamp && submittedValues ? submittedValues.lastName || '' : form.watch('lastName') || ''}
               firstName={showStamp && submittedValues ? submittedValues.firstName : form.watch('firstName') || ''}
@@ -893,8 +897,8 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
             </div>
           </CartoonContract>
           </motion.div>
+        </div>
       </motion.div>
-    </section>
-  );
+      </section>
+    );
 };
-

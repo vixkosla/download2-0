@@ -86,12 +86,12 @@ export const CartoonContract: React.FC<CartoonContractProps> = ({
       style={{
         position: 'relative',
         width: 1000,
-        maxWidth: '100%',
         height: 1200,
         margin: '2rem 0',
         background: `url('/images/textures/6-6.PNG') top center/contain no-repeat`,
         borderRadius: 16,
         overflow: 'visible',
+        flexShrink: 0,
         // transform intentionally controlled imperatively to avoid flicker on re-renders.
         willChange: 'transform',
         transition: isHovered ? 'none' : 'transform 0.18s cubic-bezier(.22,1,.36,1)',
