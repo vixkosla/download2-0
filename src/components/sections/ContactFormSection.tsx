@@ -438,7 +438,8 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
         <motion.div
           ref={headingRef}
           variants={leftBlockVariants}
-          className="md:flex md:flex-col md:items-center md:justify-center w-full md:w-[520px] lg:w-[680px] text-white font-furore font-normal text-left text-lg md:text-xl leading-tight -rotate-6 pointer-events-none pt-8 md:pt-6"
+          className="md:flex md:flex-col md:min-w-[670px] md:items-center md:justify-center w-full text-white font-furore font-normal 
+          text-left text-lg md:text-xl leading-tight -rotate-6 pointer-events-none pt-8 lg:ml-40 xl:ml-50 md:pt-6"
           style={{
             perspective: '800px',
             transformStyle: 'preserve-3d',
@@ -520,7 +521,7 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
 
           {/* Список преимуществ */}
           <motion.ul
-            className="text-left mb-8 space-y-8 text-xl md:text-2xl"
+            className="text-left mb-8 space-y-8 text-lg  md:text-2xl"
             variants={bulletContainerVariants}
             style={{ pointerEvents: 'none', transformStyle: 'preserve-3d' }}
           >
@@ -594,8 +595,8 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
         {/* Shift down contract block by 400px */}
         <motion.div
           variants={blockVariants}
-          className="contract-hover transform transition-transform duration-500 ease-out xs:translate-x-[120px] md:translate-x-[60px]"
-          style={{ marginTop: 120 }}
+          className="contract-hover transform transition-transform duration-500 ease-out self-center mx-auto md:self-start md:mx-0"
+          style={{ marginTop: 40 }}
           whileHover={isDesktop ? { x: -375, scale: 1.12 } : undefined}
           onHoverStart={() => { if (isDesktop) handleContractMouseEnter(); }}
           onHoverEnd={() => { if (isDesktop) handleContractMouseLeave(); }}

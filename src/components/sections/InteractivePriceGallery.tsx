@@ -86,7 +86,7 @@ export const InteractivePriceGallery: React.FC<InteractivePriceGalleryProps> = (
           </h2>
         </div>
         <motion.div
-          className='w-[95vw] translate-x-[7vw] absolute top-0 left-0'
+          className='w-[95vw] translate-x-[7vw] translate-y-[-340px]'
           style={{ willChange: 'clip-path, opacity, transform' }}
           initial={{ clipPath: 'polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%)', opacity: 0.001 }}
           animate={reveal ? { clipPath: 'polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)', opacity: 1 } : { clipPath: 'polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%)', opacity: 0.001 }}
@@ -385,10 +385,10 @@ const AllIconsGallery: React.FC = () => {
   };
 
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-[140px] md:gap-y-[80px] lg:gap-y-[60px] xl:gap-y-[80px] gap-x-[10px] py-1 px-0 place-items-center 
+    <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-[170px] md:gap-y-[80px] lg:gap-y-[60px] xl:gap-y-[80px] gap-x-[10px] py-1 px-0 place-items-center 
     translate-x-[-25px] translate-y-[-250px] scale-[0.7] 
-    md:translate-x-[-50px] md:translate-y-[5px] md:scale-[0.85]
-    lg:scale-[1.0]">
+    md:translate-x-[-50px] md:translate-y-[-5px] md:scale-[0.85]
+    lg:scale-[1.0] lg:gap-x-[0]">
       {/* Первая строка: Спальня, Детская */}
       <div className="flex flex-col items-center">
         <h3 className="text-3xl font-furore text-yellow-400 mb-8 text-center w-full tracking-wider z-20 relative min-h-[60px] flex items-center justify-center transition-all duration-200">
