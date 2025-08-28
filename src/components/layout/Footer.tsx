@@ -675,7 +675,7 @@ export const Footer = () => {
           position: fixed;
           top: 50%;
           left: 50%;
-          width: 80%;
+          width: 90%;
           // height: 0%;
           // padding: 40px 0;
           max-width: 800px;
@@ -686,7 +686,8 @@ export const Footer = () => {
 
         @media (min-width: 768px) {
           .thrown-container {
-            width: 60%;
+            width: 100%;
+            // height: 80%;
           }
         }
 
