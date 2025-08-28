@@ -229,8 +229,8 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
   const applyParallaxTransform = (hoverScale: number) => {
     if (cardRef.current) {
       const { x, y } = parallaxRef.current;
-      const rotateX = y * 10;
-      const rotateY = -x * 10;
+      const rotateX = y * 4;
+      const rotateY = -x * 4;
       cardRef.current.style.transform =
         `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${hoverScale}) ${flipped ? 'rotateY(180deg)' : 'rotateY(0deg)'}`;
     }
@@ -258,7 +258,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
   // Update transform when hover / flip changes
   useEffect(() => {
     applyParallaxTransform(isHovered ? 1.05 : 1);
-    
+
     // Cleanup on unmount
     return () => {
       clearTimeout(hoverTimeout.current);
@@ -285,17 +285,16 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
     }
   };
 
-  const handleCardClick = () => {
-    if (isProcessingFlip.current) return;
-    
-    isProcessingFlip.current = true;
-    setFlipped(f => !f);
-    
-    // Блокируем повторные клики на 500мс
-    setTimeout(() => {
-      isProcessingFlip.current = false;
-    }, 500);
-  };
+const handleCardClick = (e: React.MouseEvent) => {
+  const el = e.target as HTMLElement;
+  if (el.closest('a, button, [role="button"], input, textarea, select')) {
+    return; // не флипать, если клик по интерактиву
+  }
+  if (isProcessingFlip.current) return;
+  isProcessingFlip.current = true;
+  setFlipped(f => !f);
+  setTimeout(() => { isProcessingFlip.current = false; }, 500);
+};
 
   return (
     <div
@@ -328,7 +327,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
           style={{
             border: isHovered ? '4px solid #ffc700' : '4px solid transparent',
             borderRadius: 0,
-            boxShadow: isHovered 
+            boxShadow: isHovered
               ? '0 0 18px 0 #ffc700cc, 0 0 8px 0 #ffc70099, 32px 32px 128px 0 rgba(0,0,0,0.9), 8px 16px 32px 0 rgba(0,0,0,0.36)'
               : 'none',
             transitionProperty: 'box-shadow, border-color, transform',
@@ -338,178 +337,183 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
             // transform will be handled imperatively in applyParallaxTransform
             width: '100%',
             height: '100%',
-            backfaceVisibility: 'hidden',
+            // backfaceVisibility: 'hidden',
+            // pointerEvents: 'none'
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-        {/* Back side (теперь первая, по умолчанию) */}
-        <div
-          className="absolute w-full h-full flex items-center justify-center rounded-none overflow-hidden bg-[#2D1B3B]"
-          style={{
-            backfaceVisibility: "hidden",
-            boxShadow: isHovered 
-              ? '0 0 18px 0 #ffc700cc, 0 0 8px 0 #ffc70099, 32px 32px 128px 0 rgba(0,0,0,0.9), 8px 16px 32px 0 rgba(0,0,0,0.36)'
-              : 'none',
-          }}
-        >
-          <img
-            src="/images/logo.png"
-            alt="Логотип"
+          {/* Back side (теперь первая, по умолчанию) */}
+          <div
+            className={`absolute w-full h-full flex items-center justify-center rounded-none overflow-hidden bg-[#2D1B3B] ${flipped ? "pointer-events-none" : "pointer-events-auto"
+              }`}
             style={{
-              maxWidth: "70%",
-              maxHeight: "70%",
-              objectFit: "contain",
-              filter: "drop-shadow(0 2px 12px #0008)",
+              backfaceVisibility: "hidden",
+              boxShadow: isHovered
+                ? "0 0 18px 0 #ffc700cc, 0 0 8px 0 #ffc70099, 32px 32px 128px 0 rgba(0,0,0,0.9), 8px 16px 32px 0 rgba(0,0,0,0.36)"
+                : "none",
             }}
-          />
-        </div>
-        {/* Front side (теперь после переворота) */}
-        <div
-          className="absolute w-full h-full rounded-none overflow-hidden bg-[#2D1B3B]"
-          style={{
-            backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-            boxShadow: isHovered 
-              ? '0 0 18px 0 #ffc700cc, 0 0 8px 0 #ffc70099, 32px 32px 128px 0 rgba(0,0,0,0.9), 8px 16px 32px 0 rgba(0,0,0,0.36)'
-              : 'none',
-          }}
-        >
-          {/* Случайные иконки только на стороне с контактами */}
-          {flipped && icons.map((icon, idx) => (
-          <img
-            key={idx}
-            src={icon.src}
-            alt="icon"
+          >
+            <img
+              src="/images/logo.png"
+              alt="Логотип"
+              style={{
+                maxWidth: "70%",
+                maxHeight: "70%",
+                objectFit: "contain",
+                filter: "drop-shadow(0 2px 12px #0008)",
+              }}
+            />
+          </div>
+
+          {/* Front side (теперь после переворота) */}
+          <div
+            className={`absolute w-full h-full rounded-none overflow-hidden bg-[#2D1B3B] ${flipped ? "pointer-events-auto" : "pointer-events-none"
+              }`}
             style={{
-              position: 'absolute',
-              top: `${icon.top}%`,
-              left: `${icon.left}%`,
-              width: '48px',
-              height: '48px',
-              transform: `translate(-50%, -50%) rotate(${icon.rotate}deg)`,
-              pointerEvents: 'none',
-              filter: 'grayscale(1) brightness(0.7)',
-              opacity: 0.2,
-              zIndex: 1,
+              backfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+              boxShadow: isHovered
+                ? "0 0 18px 0 #ffc700cc, 0 0 8px 0 #ffc70099, 32px 32px 128px 0 rgba(0,0,0,0.9), 8px 16px 32px 0 rgba(0,0,0,0.36)"
+                : "none",
             }}
-            draggable={false}
-          />
-        ))}
-          <div className="absolute inset-0 flex flex-col justify-between p-6 ">
-            {/* Заголовок */}
-            <div className="w-full text-center mb-4">
-              <span
-                className={`text-accent font-furore text-2xl font-bold uppercase tracking-wide transition-colors duration-200 ${hoveredText === 'ЗАГОЛОВОК' ? 'text-yellow-400' : ''}`}
-                onMouseEnter={() => setHoveredText('ЗАГОЛОВОК')}
-                onMouseLeave={() => setHoveredText(null)}
-              >
-                ПРОФЕССИОНАЛЬНАЯ СБОРКА ВАШЕЙ МЕБЕЛИ
-              </span>
-            </div>
-            {/* Контент: две колонки */}
-            <div className="flex flex-row w-full flex-1 ">
-              {/* Левая колонка */}
-              <div className="flex flex-col justify-center items-start flex-1 pl-2">
-                <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">СБОРКА</span>
-                <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">РЕМОНТ</span>
-                <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">МОДЕРНИЗАЦИЯ</span>
+          >
+            {/* Случайные иконки только на стороне с контактами */}
+            {flipped &&
+              icons.map((icon, idx) => (
+                <img
+                  key={idx}
+                  src={icon.src}
+                  alt="icon"
+                  style={{
+                    position: "absolute",
+                    top: `${icon.top}%`,
+                    left: `${icon.left}%`,
+                    width: "48px",
+                    height: "48px",
+                    transform: `translate(-50%, -50%) rotate(${icon.rotate}deg)`,
+                    pointerEvents: "none",
+                    filter: "grayscale(1) brightness(0.7)",
+                    opacity: 0.2,
+                    zIndex: 1,
+                  }}
+                  draggable={false}
+                />
+              ))}
+            <div className="absolute inset-0 flex flex-col justify-between p-6 ">
+              {/* Заголовок */}
+              <div className="w-full text-center mb-4">
+                <span
+                  className={`text-accent font-furore text-2xl font-bold uppercase tracking-wide transition-colors duration-200 ${hoveredText === 'ЗАГОЛОВОК' ? 'text-yellow-400' : ''}`}
+                  onMouseEnter={() => setHoveredText('ЗАГОЛОВОК')}
+                  onMouseLeave={() => setHoveredText(null)}
+                >
+                  ПРОФЕССИОНАЛЬНАЯ СБОРКА ВАШЕЙ МЕБЕЛИ
+                </span>
               </div>
-              {/* Вертикальная линия */}
-              <div 
-                className="w-[3px] bg-accent mr-12"
-                style={{ height: '70%', alignSelf: 'center', borderRadius: 1 }}
-              />
-              {/* Правая колонка */}
-              <div className="flex flex-col justify-center items-start flex-1 gap-3">
-                {/* Телефон */}
-                <a
-                  href="tel:+78123172200"
-                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <motion.span
-                    animate={activeBounceBullet === 0 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
-                    className="flex items-center"
+              {/* Контент: две колонки */}
+              <div className="flex flex-row w-full flex-1 ">
+                {/* Левая колонка */}
+                <div className="flex flex-col justify-center items-start flex-1 pl-2">
+                  <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">СБОРКА</span>
+                  <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">РЕМОНТ</span>
+                  <span className="text-white font-furore text-2xl tracking-wide uppercase transition-colors duration-200">МОДЕРНИЗАЦИЯ</span>
+                </div>
+                {/* Вертикальная линия */}
+                <div
+                  className="w-[3px] bg-accent mr-12"
+                  style={{ height: '70%', alignSelf: 'center', borderRadius: 1 }}
+                />
+                {/* Правая колонка */}
+                <div className="flex flex-col justify-center items-start flex-1 gap-3">
+                  {/* Телефон */}
+                  <a
+                    href="tel:+78123172200"
+                    className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                    style={{ textDecoration: 'none' }}
                   >
-                    <Phone className={`text-accent w-6 h-6${activeBounceBullet === 0 ? ' bounce-check' : ''}`} />
-                  </motion.span>
-                  +7 (812) 317-22-00
-                </a>
-                {/* WhatsApp */}
-                <a
-                  href="https://wa.me/79219992200"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <motion.span
-                    animate={activeBounceBullet === 1 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
-                    className="flex items-center"
+                    <motion.span
+                      animate={activeBounceBullet === 0 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                      className="flex items-center"
+                    >
+                      <Phone className={`text-accent w-6 h-6${activeBounceBullet === 0 ? ' bounce-check' : ''}`} />
+                    </motion.span>
+                    +7 (812) 317-22-00
+                  </a>
+                  {/* WhatsApp */}
+                  <a
+                    href="https://wa.me/79219992200"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                    style={{ textDecoration: 'none' }}
                   >
-                    <MessageCircle className={`w-6 h-6${activeBounceBullet === 1 ? ' bounce-check' : ''}`} style={{ color: '#25D366' }} />
-                  </motion.span>
-                  +7 (921) 999-22-00
-                </a>
-                {/* Email */}
-                <a
-                  href="mailto:SHELF.SBORKA.SPB@GMAIL.COM"
-                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <motion.span
-                    animate={activeBounceBullet === 2 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
-                    className="flex items-center"
+                    <motion.span
+                      animate={activeBounceBullet === 1 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                      className="flex items-center"
+                    >
+                      <MessageCircle className={`w-6 h-6${activeBounceBullet === 1 ? ' bounce-check' : ''}`} style={{ color: '#25D366' }} />
+                    </motion.span>
+                    +7 (921) 999-22-00
+                  </a>
+                  {/* Email */}
+                  <a
+                    href="mailto:SHELF.SBORKA.SPB@GMAIL.COM"
+                    className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                    style={{ textDecoration: 'none' }}
                   >
-                    <Mail className={`w-6 h-6${activeBounceBullet === 2 ? ' bounce-check' : ''}`} style={{ color: '#888' }} />
-                  </motion.span>
-                  SHELF.SBORKA.SPB@GMAIL.COM
-                </a>
-                {/* Instagram */}
-                <a
-                  href="https://instagram.com/SHELF_SBORKA_SPB"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <motion.span
-                    animate={activeBounceBullet === 3 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
-                    className="flex items-center"
+                    <motion.span
+                      animate={activeBounceBullet === 2 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                      className="flex items-center"
+                    >
+                      <Mail className={`w-6 h-6${activeBounceBullet === 2 ? ' bounce-check' : ''}`} style={{ color: '#888' }} />
+                    </motion.span>
+                    SHELF.SBORKA.SPB@GMAIL.COM
+                  </a>
+                  {/* Instagram */}
+                  <a
+                    href="https://instagram.com/SHELF_SBORKA_SPB"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                    style={{ textDecoration: 'none' }}
                   >
-                    <Instagram className={`w-6 h-6${activeBounceBullet === 3 ? ' bounce-check' : ''}`} style={{ color: '#E1306C' }} />
-                  </motion.span>
-                  SHELF_SBORKA_SPB
-                </a>
-                {/* Telegram */}
-                <a
-                  href="https://t.me/SHELF_SBORKA_SPB"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
-                  style={{ textDecoration: 'none' }}
-                >
-                  <motion.span
-                    animate={activeBounceBullet === 4 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
-                    className="flex items-center"
+                    <motion.span
+                      animate={activeBounceBullet === 3 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                      className="flex items-center"
+                    >
+                      <Instagram className={`w-6 h-6${activeBounceBullet === 3 ? ' bounce-check' : ''}`} style={{ color: '#E1306C' }} />
+                    </motion.span>
+                    SHELF_SBORKA_SPB
+                  </a>
+                  {/* Telegram */}
+                  <a
+                    href="https://t.me/SHELF_SBORKA_SPB"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-white font-furore text-xl hover:text-yellow-400 transition-colors cursor-pointer"
+                    style={{ textDecoration: 'none' }}
                   >
-                    <Send className={`w-6 h-6${activeBounceBullet === 4 ? ' bounce-check' : ''}`} style={{ color: '#229ED9' }} />
-                  </motion.span>
-                  @SHELF_SBORKA_SPB
-                </a>
+                    <motion.span
+                      animate={activeBounceBullet === 4 ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                      transition={{ duration: 0.6, repeat: Infinity, repeatType: 'loop', ease: 'easeInOut' }}
+                      className="flex items-center"
+                    >
+                      <Send className={`w-6 h-6${activeBounceBullet === 4 ? ' bounce-check' : ''}`} style={{ color: '#229ED9' }} />
+                    </motion.span>
+                    @SHELF_SBORKA_SPB
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   )
 }
 
