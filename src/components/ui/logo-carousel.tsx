@@ -436,12 +436,10 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
       }}
       className="w-full h-[80px] sm:h-[120px] md:h-[150px] lg:h-[180px] overflow-hidden relative partners-carousel z-[30000]"
       style={{
-        backgroundImage: "url('/images/partners/IMG_6107.jpg')",
-        backgroundRepeat: 'repeat',
-        backgroundSize: 'cover',
-        backgroundPositionY: 'bottom',
         backgroundColor: '#2D1B3B',
-        backgroundPositionX,
+        transformStyle: 'preserve-3d',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
         paddingLeft: sideBuffer,
         paddingRight: sideBuffer,
         transform: 'none',
@@ -568,8 +566,23 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         })}
       </motion.div>
       {/* Добавляем верхнюю и нижнюю границу */}
-      <div className="top-border absolute top-0 left-0 w-full h-[3px] bg-transparent" />
-      <div className="bottom-border absolute bottom-0 left-0 w-full h-[3px] bg-transparent" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: "url('/images/partners/IMG_6107.jpg')",
+            backgroundRepeat: 'repeat',
+            backgroundSize: 'cover',
+            backgroundPositionY: 'bottom',
+            // backgroundPositionX,
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+          }}
+        />
+      </div>
+      <div className="top-border absolute top-0 left-0 w-full h-[3px] bg-transparent" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }} />
+      <div className="bottom-border absolute bottom-0 left-0 w-full h-[3px] bg-transparent" style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }} />
 
       <style jsx global>{`
         .partners-carousel {
