@@ -194,7 +194,7 @@ export const Footer = () => {
   // Контент для вкладок (можно вынести в отдельные компоненты)
   const tabContent: Record<string, JSX.Element> = {
     privacy: (
-      <div className="p-8 text-lg md:max-w-[1400px] mx-auto w-full">
+      <div className="p-8 text-xs md:text-md md:max-w-[1400px] mx-auto w-full overflow-y-auto">
         <p className="privacy-intro">НАСТОЯЩАЯ ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ ОПРЕДЕЛЯЕТ ПОРЯДОК ОБРАБОТКИ И ЗАЩИТЫ ПЕРСОНАЛЬНЫХ ДАННЫХ ФИЗИЧЕСКИХ ЛИЦ, ПОЛЬЗУЮЩИХСЯ СЕРВИСАМИ САЙТА SHELF (ДАЛЕЕ – КОМПАНИЯ).</p>
         <h3 className="text-accent mt-6 text-xl font-bold">1. Общие положения</h3>
         <p>1.1. Настоящая Политика является официальным документом Компании и определяет порядок обработки и защиты информации о физических лицах, пользующихся услугами сайта SHELF.</p>
@@ -222,7 +222,7 @@ export const Footer = () => {
       </div>
     ),
     terms: (
-      <div className="p-8 text-lg md:max-w-[1400px] mx-auto w-full">
+      <div className="p-8 text-xs md:text-md md:max-w-[1400px] mx-auto w-full overflow-y-auto">
         <h3 className="text-accent mt-6 text-xl font-bold">1. Общие положения</h3>
         <p>1.1. Настоящее Пользовательское соглашение (далее — Соглашение) регулирует отношения между владельцем сайта SHELF и пользователями данного сайта.</p>
         <p>1.2. Используя сайт, вы соглашаетесь с условиями данного Соглашения.</p>
@@ -586,7 +586,7 @@ export const Footer = () => {
                 {/* Текст подложки (скрыт при showThrown) */}
                 {!showThrown && (
                   <div
-                    className={`policy-container absolute inset-0 z-[40000] overflow-y-auto p-4 flex flex-col items-center justify-start text-xs md:text-sm leading-tight ${activeTab === 'privacy' ? 'terms' : 'privacy'}`}
+                    className={`policy-container absolute inset-0 z-[40000] overflow-y-auto p-4 flex flex-col items-center justify-start leading-tight ${activeTab === 'privacy' ? 'terms' : 'privacy'}`}
                     style={{ pointerEvents: isClosing ? 'none' : 'auto' }}
                   >
                     {tabContent[activeTab === 'privacy' ? 'terms' : 'privacy']}
@@ -687,6 +687,7 @@ export const Footer = () => {
         @media (min-width: 768px) {
           .thrown-container {
             width: 100%;
+            // font-size: 0.25rem;
             // height: 80%;
           }
         }
