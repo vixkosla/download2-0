@@ -366,9 +366,8 @@ html {
 
     /* Header Styles */
     .header {
-        @apply bg-transparent fixed w-full top-0 left-0 z-[10000] transition-colors duration-300 ease-in-out;
-        min-height: 140px;
-        /* Keep minimum height */
+        @apply bg-transparent fixed w-full min-h-[110px] sm:min-h-[140px] top-0 left-0 z-[10000] transition-colors duration-300 ease-in-out;
+
         opacity: 0;
         /* Initially hidden for animation */
         pointer-events: none;
@@ -1386,7 +1385,7 @@ html {
     /* Десктопы (1024px+) */
     @media (min-width: 1024px) {
         .ipad-video-wrapper {
-            left: 64%;
+            left: 54%;
             width: 1400px;
             max-width: 190vw;
             scale: 0.9;
@@ -1398,7 +1397,7 @@ html {
     @media (min-width: 1280px) {
         .ipad-video-wrapper {
             top: 65%;
-            left: 52.5%;
+            left: 42.5%;
             width: 1400px;
             max-width: 190vw;
             scale: 1.0;

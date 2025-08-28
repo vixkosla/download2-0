@@ -426,13 +426,17 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
       // onMouseLeave={resetSectionMotion} // Убираем, чтобы избежать конфликтов анимации
     >
       {/* PNG-анимация над формой */}
-      <PNGAnimation show={true} />
+      <div className="lg:self-start lg:ml-[290px]">
+        <PNGAnimation show={true} />
+      </div>
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.15 }}
-        className="contact__content flex flex-col md:flex-row justify-between md:justify-start items-start relative mx-auto gap-6 md:gap-10 pt-12 w-full"
+        className="contact__content flex flex-col md:flex-row 
+        justify-between md:justify-start items-start 
+        relative mx-auto gap-6 md:gap-10 pt-12 w-full"
       >
         {/* Creative marketing copy – visible on medium screens and above */}
         <motion.div
@@ -595,13 +599,13 @@ export const ContactFormSection: FC<ContactFormSectionProps> = ({ sectionId = "o
 
         {/* Shift down contract block by 400px */}
         <div
-          className="w-full flex justify-center md:justify-start origin-top scale-[0.85] md:scale-100"
+          className="w-full flex justify-center md:justify-start origin-top scale-[0.5] md:scale-100"
           style={{ marginTop: 40 }}
         >
           <motion.div
             variants={blockVariants}
             className="contract-hover transform transition-transform duration-500 ease-out self-center md:self-start md:mx-0"
-            whileHover={isDesktop ? { x: -375, scale: 1.12 } : undefined}
+            whileHover={isDesktop ? { x: -175 } : undefined}
             onHoverStart={() => { if (isDesktop) handleContractMouseEnter(); }}
             onHoverEnd={() => { if (isDesktop) handleContractMouseLeave(); }}
           >

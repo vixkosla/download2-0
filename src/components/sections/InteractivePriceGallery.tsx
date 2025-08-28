@@ -42,11 +42,13 @@ export const InteractivePriceGallery: React.FC<InteractivePriceGalleryProps> = (
         />
         {/* Контент (заголовок, иконки) */}
         <div
-          className="container mx-auto relative flex items-center justify-center"
+          className="container mx-auto relative flex items-center justify-center "
           style={{ transform: 'translateY(-300px)' }}
         >
           <h2
-            className="section-title text-[11rem] flex items-end justify-center gap-12 mb-12 md:mb-16 text-center"
+            className="section-title origin-bottom scale-[0.6] md:scale-[0.8] lg:scale-[1] text-[6rem] 
+            sm:text-[8rem] md:text-[9rem] lg:text-[11rem] flex items-end justify-center 
+            gap-0 sm:gap-2 md:gap-4 lg:gap-6 xl:gap-8 mb-12 md:mb-16 text-center"
             style={{ color: '#ffc700' }}
           >
             <motion.span
@@ -240,8 +242,8 @@ const ICON_GROUPS = [
   {
     room: 'ПРИХОЖАЯ',
     icons: [
-      { name: '9 прихожая без', closed: '/app/9-прихожая-закрыта-без.png', open: '/app/9-прихожая-открыта-без.png', price: 2800, small: false, large: false, offsetY: 0, translateY: 38, width: 120, height: 160 },
-      { name: '9 прихожая с', closed: '/app/9-прихожая-закрыта-с.png', open: '/app/9-прихожая-открыта-с.png', price: 3200, small: false, large: false, offsetY: 0, translateY: 52, width: 120, height: 160 },
+      { name: '17 комод', closed: '/app/17-комод-закрыт.png', open: '/app/17-комод-октрыт.png', price: 2800, small: false, large: false, offsetY: 0, translateY: 64, width: 120, height: 160 },
+      { name: '9 прихожая с', closed: '/app/9-прихожая-закрыта-с.png', open: '/app/9-прихожая-открыта-с.png', price: 3200, small: false, large: false, offsetY: 0, translateY: 32, width: 220, height: 160 },
     ],
   },
   {

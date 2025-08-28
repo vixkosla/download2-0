@@ -191,12 +191,12 @@ interface LogoCarouselProps {
 export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
   const x = useMotionValue(0);
   // Боковой буфер слева/справа (динамический: на мобилке меньше)
-  const [sideBuffer, setSideBuffer] = useState(500);
+  const [sideBuffer, setSideBuffer] = useState(200);
   const [isDragging, setIsDragging] = useState(false);
   // Убираем лишние дубликаты — оставляем только одну копию массива логотипов
   const duplicated = logos;
   // Limit background shift so texture stays in view (avoids huge offsets where browsers stop repeating)
-  const [textureWidth, setTextureWidth] = useState(1024);  // Default value, will be updated after image loads
+  const [textureWidth, setTextureWidth] = useState(1920);  // Increased default texture width to prevent tiling issues
   // Ensure we always return a non-negative offset (some browsers drop the texture when the value is
   // negative and the image is set to repeat). We take a safe modulo that wraps into
   // the 0‥textureWidth range.
@@ -274,8 +274,8 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         // ширина видимой области = ширина секции (родителя)
         const parentWidth = trackRef.current.parentElement?.clientWidth || 0;
         // динамически считаем буфер в зависимости от ширины экрана
-        const isMobileNow = window.innerWidth <= 640;
-        const localBuffer = isMobileNow ? 16 : 500;
+        const isMobileNow = window.innerWidth < 768;
+        const localBuffer = isMobileNow ? 32 : 200;
         setIsMobile(isMobileNow);
         setSideBuffer(localBuffer);
         // видимая часть меньше ширины секции на два буфера
@@ -434,11 +434,11 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         scale:  { duration: 0.35, ease: [0.42, 0, 0.58, 1] },
         opacity:{ duration: 0.20, ease: 'linear' },
       }}
-      className="w-screen h-[130px] sm:h-[200px] overflow-hidden relative partners-carousel z-[30000]"
+      className="w-full h-[80px] sm:h-[120px] md:h-[150px] lg:h-[180px] overflow-hidden relative partners-carousel z-[30000]"
       style={{
         backgroundImage: "url('/images/partners/IMG_6107.jpg')",
-        backgroundRepeat: 'repeat-x',
-        backgroundSize: 'auto 100%',
+        backgroundRepeat: 'repeat',
+        backgroundSize: 'cover',
         backgroundPositionY: 'bottom',
         backgroundColor: '#2D1B3B',
         backgroundPositionX,
@@ -478,7 +478,7 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
       />
       <motion.div
         ref={trackRef}
-        className="absolute bottom-0 flex gap-16 sm:gap-32 w-max z-20 cursor-grab active:cursor-grabbing"
+        className="absolute bottom-0 flex gap-8 sm:gap-12 md:gap-16 lg:gap-24 xl:gap-32 w-max z-20 cursor-grab active:cursor-grabbing"
         style={{ x, touchAction: 'pan-y' }}
         drag="x"
         dragConstraints={{ left: -(Math.max(containerWidth - visibleWidth, 0) + OVERSHOOT), right: OVERSHOOT }}
@@ -524,20 +524,20 @@ export function LogoCarousel({ sectionId, active = false }: LogoCarouselProps) {
         }}
       >
         {duplicated.map((logo, index) => {
-          const factor = isMobile ? 0.5 : 0.6;
+          const factor = isMobile ? 0.35 : 0.45;
           const scaledWidth = logo.width ? Math.round(logo.width * factor) : undefined;
           const scaledHeight = logo.height ? Math.round(logo.height * factor) : undefined;
           return (
             <div
               key={index}
-              className="flex-shrink-0 flex items-center justify-center h-[130px] sm:h-[200px] cursor-pointer group relative min-w-[160px] sm:min-w-[240px]"
+              className="flex-shrink-0 flex items-center justify-center h-[80px] sm:h-[120px] md:h-[150px] lg:h-[180px] cursor-pointer group relative min-w-[100px] sm:min-w-[140px] md:min-w-[180px] lg:min-w-[220px]"
             >
               {logo.websiteUrl ? (
                 <a 
                   href={logo.websiteUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="transition-transform duration-150 hover:scale-110"
+                  className="transition-transform duration-150 hover:scale-105"
                   onMouseDown={e => e.stopPropagation()}
                 >
                   <Image

@@ -250,6 +250,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
   };
 
   const resetParallax = () => {
+    if (isHovered) return; // Не сбрасываем, если карта в состоянии hover
     parallaxRef.current = { x: 0, y: 0 };
     applyParallaxTransform(isHovered ? 1.05 : 1);
   };
@@ -257,15 +258,44 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
   // Update transform when hover / flip changes
   useEffect(() => {
     applyParallaxTransform(isHovered ? 1.05 : 1);
+    
+    // Cleanup on unmount
+    return () => {
+      clearTimeout(hoverTimeout.current);
+    };
   }, [isHovered, flipped]);
 
   // --- Обработчики для hover ---
+  const hoverTimeout = useRef<NodeJS.Timeout>();
+  const isProcessingFlip = useRef(false);
+
   const handleMouseEnter = () => {
-    setIsHovered(true);
-  }
+    clearTimeout(hoverTimeout.current);
+    hoverTimeout.current = setTimeout(() => {
+      if (!isProcessingFlip.current) {
+        setIsHovered(true);
+      }
+    }, 50);
+  };
+
   const handleMouseLeave = () => {
-    setIsHovered(false);
-  }
+    clearTimeout(hoverTimeout.current);
+    if (!isProcessingFlip.current) {
+      setIsHovered(false);
+    }
+  };
+
+  const handleCardClick = () => {
+    if (isProcessingFlip.current) return;
+    
+    isProcessingFlip.current = true;
+    setFlipped(f => !f);
+    
+    // Блокируем повторные клики на 500мс
+    setTimeout(() => {
+      isProcessingFlip.current = false;
+    }, 500);
+  };
 
   return (
     <div
@@ -278,7 +308,7 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
         position: 'relative',
         overflow: 'visible',
       }}
-      onClick={() => setFlipped(f => !f)}
+      onClick={handleCardClick}
       onMouseMove={handleParallax}
       onMouseLeave={resetParallax}
     >
@@ -294,15 +324,21 @@ const CosmicNebulaMastercard: React.FC<CosmicNebulaMastercardProps> = ({
       >
         <div
           ref={cardRef}
-          className="relative w-full h-full transition-shadow duration-300"
+          className="relative w-full h-full transition-all duration-300 will-change-transform"
           style={{
             border: isHovered ? '4px solid #ffc700' : '4px solid transparent',
             borderRadius: 0,
-            transition: 'box-shadow 0.3s, border-color 0.3s, transform 0.3s cubic-bezier(.4,2,.6,1)',
+            boxShadow: isHovered 
+              ? '0 0 18px 0 #ffc700cc, 0 0 8px 0 #ffc70099, 32px 32px 128px 0 rgba(0,0,0,0.9), 8px 16px 32px 0 rgba(0,0,0,0.36)'
+              : 'none',
+            transitionProperty: 'box-shadow, border-color, transform',
+            transitionTimingFunction: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+            transitionDuration: '0.3s',
             transformStyle: 'preserve-3d',
             // transform will be handled imperatively in applyParallaxTransform
             width: '100%',
             height: '100%',
+            backfaceVisibility: 'hidden',
           }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

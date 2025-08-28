@@ -271,8 +271,10 @@ export const Header: React.FC<HeaderProps> = ({ appReadyForAnimation = false, st
   // useEffect removed – paths rely on fixed pathLength attribute for animation
 
   return (
-    <header ref={headerRef} className={cn('header', isScrolled && 'scrolled', hasAnimated && 'header--bounce')} style={{ minHeight: 140 }}>
-      <div className="container header__content flex items-center justify-between gap-0 md:gap-4 lg:gap-8 pl-[0] lg:pl-[20px] ml-[0] 2xl:ml-[auto]">
+    <header ref={headerRef} className={cn('header', isScrolled && 'scrolled', hasAnimated && 'header--bounce')}>
+      <div className="container header__content flex items-center justify-center sm:justify-between
+      scale-[0.7] sm:scale-[1.0]
+      gap-0 md:gap-4 lg:gap-8 pl-[0] lg:pl-[20px] ml-[0] 2xl:ml-[auto]">
         <Link href="/" className="logo group flex flex-col  items-center justify-center gap-1 relative min-h-[100px] scale-[0.55] md:scale-[0.8] lg:scale-[1]" aria-label="Перейти на главную страницу">
             <Image src="/images/logo.svg" alt="SHELF Сборка Мебели Logo" width={60} height={60} className="logo__image" data-ai-hint="logo company" />
             <p className="header__subtitle">Профессиональная</p>

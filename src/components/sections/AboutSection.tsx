@@ -103,7 +103,9 @@ export const AboutSection = () => {
        ">
         {/* Вариант со спрайтом из public/animation6/sprite.webp + meta.json */}
         <div
-          className={`scale-[0.8] align-middle transform transition-all duration-700 ease-out ${
+          className={`scale-[0.8] translate-y-[55px] sm:translate-y-[50px] md:translate-y-[50px] lg:translate-y-[150px] 
+            translate-x-[130px] sm:translate-x-[0]
+            align-middle transform transition-all duration-700 ease-out ${
             inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`}
         >

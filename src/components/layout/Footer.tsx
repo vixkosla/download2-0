@@ -277,18 +277,20 @@ export const Footer = () => {
       {!isExpanded && (
         <div className="footer__bottom" style={{ background: 'transparent', borderTop: 'none' }}>
           <div className="footer__bottom-content container flex justify-center py-4">
-            {/* Добавил mt-4, чтобы изображения были чуть ниже в футере */}
-            <div
-              ref={folderContainerRef}
-              className="relative w-[800px] h-[1200px] mt-20" 
-              onMouseEnter={handleFolderMouseEnter}
-              onMouseLeave={handleFolderMouseLeave}
-              onMouseMove={handleFolderMouseMove}
-              style={{
-                transform: 'scale(1)',
-                transition: 'transform 0.4s cubic-bezier(0.6,0.05,0.4,1)',
-              }}
-            >
+            {/* Мобильный скейл кнопок в свернутом состоянии, без влияния на раскрытие */}
+            <div className="-translate-x-[188px] sm:-translate-x-[88px] translate-y-[90px] sm:translate-y-[90px] md:translate-x-0 md:translate-y-0">
+              <div className="origin-top scale-[0.4] sm:scale-[0.55] md:scale-100">
+                <div
+                  ref={folderContainerRef}
+                  className="relative w-[800px] h-[1200px] mt-6 md:mt-20" 
+                  onMouseEnter={handleFolderMouseEnter}
+                  onMouseLeave={handleFolderMouseLeave}
+                  onMouseMove={handleFolderMouseMove}
+                  style={{
+                    transform: 'scale(1)',
+                    transition: 'transform 0.4s cubic-bezier(0.6,0.05,0.4,1)',
+                  }}
+                >
               {TABS.map((tab, idx) => {
                 const isSecond = idx === 1;
                 const buttonZ = isSecond ? 10 : 20;
@@ -349,6 +351,8 @@ export const Footer = () => {
                 onMouseEnter={() => setHoveredTabKey(TABS[1].key)}
                 onMouseLeave={() => setHoveredTabKey(null)}
               />
+                </div>
+              </div>
             </div>
           </div>
         </div>
